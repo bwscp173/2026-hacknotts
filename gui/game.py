@@ -29,6 +29,9 @@ class Game:
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
         pygame.display.set_caption("Big money!!!!")
 
+        self.running = False
+        self.cut_off_date = "2003-01-01"
+
         self.frames_per_day = 60
         self.min_frames_per_day = 20
 
@@ -90,6 +93,24 @@ class Game:
         self.increment_trading_day()
         self.update_graph()
 
+        if self.current_date == self.cut_off_date:
+            self.running = False
+            self.end_screen_loop()
+
+
+    def end_screen_loop(self):
+        sub_running = True
+
+
+
+        while sub_running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sub_running = False
+
+
+            pygame.display.flip()
+
     def increment_trading_day(self):
         for stock_obj in self.stock_objects:
             # {date (str): {open: float, high: float, low: float, close: float, volume: int}}
@@ -109,7 +130,7 @@ class Game:
         pygame.display.flip()
 
     def run(self):
-        running = True
+        self.running = True
 
         target_x = None
         target_y = None
@@ -120,11 +141,11 @@ class Game:
 
         clock = pygame.time.Clock()
 
-        while running:
+        while self.running:
             mouse_pressed = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
@@ -185,7 +206,7 @@ class Game:
                 if day_counter >= self.days_per_decay:
                     day_counter = 0
                     self.frames_per_day = max(self.min_frames_per_day, self.frames_per_day - 5)
-                    
+
         pygame.quit()
 
     def draw_text(self, text, font, color, x, y):
