@@ -63,38 +63,17 @@ class bonsai_buddy:
         self.frame_index = (self.frame_index+1) % 343
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
+        print(self.frame_index)
 
-    def steal_mouse(self, screen_size:tuple, time2=2):
-        end_time = datetime.datetime.now() + datetime.timedelta(seconds=time2)
-        while datetime.datetime.now() < end_time:
-            x = randint(0,screen_size[0])
-            y = randint(0,screen_size[1])
+    # def steal_mouse(self, screen_size:tuple, time2=2):
+    #     end_time = datetime.datetime.now() + datetime.timedelta(seconds=time2)
+    #     while datetime.datetime.now() < end_time:
+    #         x = randint(0,screen_size[0])
+    #         y = randint(0,screen_size[1])
 
-            moveTo(x, y, 1)
-            sleep(0.5)
-        print(end_time)
-
-
-    def moveTo(self, x, y, slow=0.003):
-        steps = 100
-
-        target_x = x
-        target_y = y
-
-        x, y = pygame.mouse.get_pos()
-        dy = (y - target_y)/steps
-        dx = (x - target_x)/steps
-
-        for _ in range(steps):
-            x -= dx
-            y -= dy
-            pygame.mouse.set_pos(x, y)
-            self.set_location((x, y))
-
-            self.draw(self.screen)
-            pygame.display.flip()
-
-            sleep(slow)
+    #         moveTo(x, y, 1)
+    #         sleep(0.5)
+    #     print(end_time)
 
 
 if __name__ == "__main__":
