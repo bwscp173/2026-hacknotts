@@ -86,7 +86,7 @@ class RightPanel:
         )
         self.to_draw.append(self.sell_button)
 
-    def initalise_stock_list(self, stocks: dict[str, dict]):
+    def initialise_stock_list(self, stocks: dict[str, dict]):
         """
         Stocks are {stock_name: current_price}
         since you can't have bought anything before the first day (right?)
