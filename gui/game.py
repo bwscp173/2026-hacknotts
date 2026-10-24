@@ -101,14 +101,13 @@ class Game:
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        print("SPACE DOWN")
                         self.bb.draw(self.screen)
                         
                         steps = 500
                         target_x = randint(0, self.width-200)
                         target_y = randint(0, self.height-200)
-                
                         drag_x, drag_y = pygame.mouse.get_pos()
+
                         dy = (drag_y - target_y)/steps
                         dx = (drag_x - target_x)/steps
                         self.bb.set_frame(48)
@@ -122,20 +121,21 @@ class Game:
 
 
 
-                if event.type == pygame.MOUSEMOTION:
-                    self.bb.set_location(pygame.mouse.get_pos())
+                #if event.type == pygame.MOUSEMOTION:
+                #    self.bb.set_location(pygame.mouse.get_pos())
 
             if target_x is not None:
                 step += 1
                 drag_x -= dx
                 drag_y -= dy
-                pygame.mouse.set_pos(drag_x +160, drag_y+80)
-                self.bb.set_location((drag_x, drag_y))
+                pygame.mouse.set_pos(drag_x, drag_y)
+                self.bb.set_location((drag_x-160, drag_y-80))
                 if int(target_x) == int(drag_x) or step >= steps:
                     target_x = None
                     target_y = None
                     step = 0
                     self.bb.set_frame(0)
+                    self.bb.set_location((self.height - 150, self.width - 150))
                     
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
