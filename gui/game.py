@@ -5,6 +5,7 @@ from random import randint
 
 from get_me_data import loader
 from gui.right_panel import RightPanel
+from .bottom_panel import BottomPanel
 
 from .graph import Graph
 from bonsai_buddy.main_v2 import bonsai_buddy
@@ -37,6 +38,7 @@ class Game:
             self.height - 20,
             self.stocks,
         )
+        self.bottom_panel = BottomPanel(10, int(self.height * (5 / 8)) + 20, int(self.width * (5 / 8)), int(self.height * (3 / 8)) - 30, 0)
 
         # TODO: add individual buttons
         #    - stock selector to switch graph
@@ -44,7 +46,7 @@ class Game:
         #    - buy/sell button
         #    - banzibuddy interactions
         #    - current profit
-
+        self.bottom_panel.net_worth = 0
         self.bb = bonsai_buddy(self.screen)
         self.update_graph()
 
@@ -86,7 +88,6 @@ class Game:
             self.stocks[stock_obj.symbol]["yesterday_price"] = self.stocks[stock_obj.symbol]["buy_price"]
             if stock_obj.has_date(self.current_date):
                 self.stocks[stock_obj.symbol]["buy_price"] = stock_obj.generate_reasonable_price_for(self.current_date)
-
 
     def update_graph(self):
         parsed = datetime.strptime(self.current_date, "%Y-%m-%d")
@@ -155,6 +156,7 @@ class Game:
             self.fill((20, 20, 20))
             self.graph.draw(self.screen, 10, 10)
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
+            self.bottom_panel.draw(self.screen)
             self.bb.draw(self.screen)
             self.update()
 
