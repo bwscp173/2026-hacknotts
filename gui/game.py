@@ -29,6 +29,11 @@ class Game:
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
         pygame.display.set_caption("Big money!!!!")
 
+        self.frames_per_day = 60
+        self.min_frames_per_day = 20
+
+        self.days_per_decay = 6
+
         # TODO: add screen data
 
         self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("IBM"), self)
@@ -110,6 +115,9 @@ class Game:
         target_y = None
         step = 0
 
+        frame_counter = 0
+        day_counter = 0
+
         clock = pygame.time.Clock()
 
         while running:
@@ -166,7 +174,18 @@ class Game:
             self.update()
 
             clock.tick(30)
+            frame_counter += 1
 
+            if frame_counter >= self.frames_per_day:
+                frame_counter = 0
+                self.next_day()
+
+                day_counter += 1
+
+                if day_counter >= self.days_per_decay:
+                    day_counter = 0
+                    self.frames_per_day = max(self.min_frames_per_day, self.frames_per_day - 5)
+                    
         pygame.quit()
 
     def draw_text(self, text, font, color, x, y):
