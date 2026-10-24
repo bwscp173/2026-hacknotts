@@ -1,5 +1,7 @@
 import pygame
 
+from .graph import Graph
+
 
 class Game:
     def __init__(self, width, height):
@@ -23,6 +25,19 @@ class Game:
 
     def update(self):
         pygame.display.flip()
+
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+            self.fill((255, 255, 255))
+            self.graph.draw(self.screen, 10, 10)
+            self.update()
+
+        pygame.quit()
 
     def draw_text(self, text, font, color, x, y):
         text_surface = font.render(text, True, color)
