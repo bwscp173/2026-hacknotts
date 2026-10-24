@@ -66,7 +66,7 @@ class Stock:
                 "close": s_close,
                 "volume": s_volume,
             }
-            for _, __, date, s_open, s_close, s_high, s_low, s_volume in results
+            for _, __, date, s_open, s_high, s_low, s_close, s_volume in results
         }
 
     def get_latest_date(self):
