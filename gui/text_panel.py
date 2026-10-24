@@ -7,7 +7,7 @@ class TextPanel:
         self.y = y
         self.width = width
         self.height = height
-        self.font = pygame.font.SysFont("Monospace", 16)
+        self.font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 16)
         self.texts = []
         for line in text.split("\n"):
             self.texts.append(self.font.render(line, True, (200, 200, 200)))

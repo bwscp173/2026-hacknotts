@@ -18,8 +18,8 @@ class StockList:
         self.unselected_bg_colour = (255, 0, 0)
         self.selected_bg_colour = (0, 255, 0)
 
-        self.font = pygame.font.SysFont("Monospace", (self.height//len(self.stocks))-4)
-        self.font_small = pygame.font.SysFont("Monospace", (self.height // len(self.stocks)) // 2)
+        self.font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", (self.height//len(self.stocks))-4)
+        self.font_small = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", (self.height // len(self.stocks)) // 2)
 
     def calc_diffs_to_yesterday(self):
         diffs = {}

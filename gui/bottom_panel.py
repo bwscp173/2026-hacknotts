@@ -16,7 +16,7 @@ class BottomPanel:
         self.surface.fill((30, 30, 30))
 
         self.net_worth_panel = TextPanel(
-            f"Total portfolio value: ${self.net_worth:.2f}", 10, 10, 350, 40
+            f"Net value: ${self.net_worth:.2f}", 10, 10, 350, 40
         )
         self.to_draw.append(self.net_worth_panel)
 
@@ -30,7 +30,7 @@ class BottomPanel:
             self.net_worth = new_net_worth
         if new_cash is not None:
             self.cash = new_cash
-        self.net_worth_panel.change_text(f"Total portfolio value: ${self.net_worth:.2f}")
+        self.net_worth_panel.change_text(f"Net value: ${self.net_worth:.2f}")
         self.cash_panel.change_text(f"Cash: ${self.cash:.2f}")
 
     def draw(self, screen):
