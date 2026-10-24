@@ -27,7 +27,7 @@ def get_symbols():
 
 class Stock:
     def __init__(self, symbol):
-        self.__symbol = symbol
+        self.symbol = symbol
 
         # {date (str): {open: float, high: float, low: float, close: float, volume: int}}
         self.__data = {}
@@ -43,7 +43,7 @@ class Stock:
 
         return
 
-    def get_date_for_date(self, date):
+    def get_data_for_date(self, date):
         return self.__data[date]
 
     def has_date(self, date_string):
@@ -53,7 +53,7 @@ class Stock:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM stocks WHERE symbol = ?", (self.__symbol,))
+        cursor.execute("SELECT * FROM stocks WHERE symbol = ?", (self.symbol,))
         results = cursor.fetchall()
 
         conn.close()

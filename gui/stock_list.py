@@ -20,7 +20,7 @@ class StockList:
     def calc_diffs_to_yesterday(self):
         diffs = {}
         for stock in self.stocks:
-            diffs[stock] = (self.stocks[stock]["buy_price"] - self.stocks[stock]["yesterday_price"]) / self.stocks[stock]["yesterday_price"]
+            diffs[stock] = 100 * ((self.stocks[stock]["buy_price"] - self.stocks[stock]["yesterday_price"]) / self.stocks[stock]["yesterday_price"])
         return diffs
 
     def draw(self, screen, global_mouse, is_left_clicking):
