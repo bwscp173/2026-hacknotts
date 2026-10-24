@@ -10,9 +10,17 @@ fetcher.init_db()
 
 symbols = ["IPET"]
 
+year = 2000
+month = 3
+
+months_to_fetch = 5
+
+
 for symbol in symbols:
-    fetcher.fetch(symbol, 2000, 3)
-    fetcher.fetch(symbol, 2000, 4)
-    fetcher.fetch(symbol, 2000, 5)
-    fetcher.fetch(symbol, 2000, 6)
-    fetcher.fetch(symbol, 2000, 7)
+    for i in range(months_to_fetch):
+        fetcher.fetch(symbol, year, month)
+        month += 1
+
+        if month > 12:
+            month = 1
+            year += 1
