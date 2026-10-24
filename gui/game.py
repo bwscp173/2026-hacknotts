@@ -28,7 +28,7 @@ class Game:
 
         # TODO: add screen data
 
-        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("IBM"))
+        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("IBM"), self)
 
         self.right_panel = RightPanel(
             int(self.width * (5 / 8)) + 20,
@@ -36,6 +36,7 @@ class Game:
             int(self.width * (3 / 8)) - 30,
             self.height - 20,
             self.stocks,
+            self.graph
         )
 
         # TODO: add individual buttons
@@ -104,6 +105,9 @@ class Game:
         target_x = None
         target_y = None
         step = 0
+
+        clock = pygame.time.Clock()
+
         while running:
             mouse_pressed = False
             for event in pygame.event.get():
@@ -155,6 +159,8 @@ class Game:
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
             self.bb.draw(self.screen)
             self.update()
+
+            clock.tick(30)
 
         pygame.quit()
 

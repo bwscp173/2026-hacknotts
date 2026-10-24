@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 
 from get_me_data.loader import Stock
 
-
 def round_to_nearest_week(dt, start_day=0):
     """
     dt: datetime object
@@ -29,13 +28,18 @@ class Graph:
     The trading graph that attaches to the screen
     """
 
-    def __init__(self, width, height, data: Stock):
+    def __init__(self, width, height, data: Stock, game):
         self.surface = pygame.Surface((width, height))
         self.__stock = data
+        self.game = game
 
         y, m, d = self.__stock.get_latest_date()
         self.update(d, m, y, 30)
 
+    def change_stock(self, stock: Stock):
+        self.__stock = stock
+
+        self.game.update_graph()
 
     def update(self, current_day: int, current_month: int, current_year: int, history_days: int):
         self.surface.fill((0, 0, 0))
@@ -109,7 +113,6 @@ class Graph:
         y_scale = (self.surface.get_height() - 32) / y_change
         y_offset = min_value
 
-        last_average = 0
 
         x_offset = 40
         for i in range(len(data_points)-1, -1, -1):
@@ -136,7 +139,7 @@ class Graph:
                 colour,
                 (
                     x_offset+1, self.surface.get_height() - close_y - 30,
-                    day_width-2, abs(open_y - close_y)
+                    day_width-2, max(1, abs(open_y - close_y))
                 )
             )
 
