@@ -1,6 +1,10 @@
 import pygame
 
+from gui.right_panel import RightPanel
+
 from .graph import Graph
+
+pygame.init()
 
 
 class Game:
@@ -12,6 +16,14 @@ class Game:
 
         # TODO: add screen data
         self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), None)
+
+        self.right_panel = RightPanel(
+            int(self.width * (5 / 8)) + 20,
+            10,
+            int(self.width * (3 / 8)) - 30,
+            self.height - 20,
+            None,
+        )
 
         # TODO: add individual buttons
         #    - stock selector to switch graph
@@ -29,12 +41,17 @@ class Game:
     def run(self):
         running = True
         while running:
+            mouse_pressed = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pressed = True
+
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
+            self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
             self.update()
 
         pygame.quit()
