@@ -104,13 +104,16 @@ class Game:
                         self.bb.draw(self.screen)
                         
                         steps = 500
-                        target_x = randint(0, self.width-200)
-                        target_y = randint(0, self.height-200)
+                        target_x = randint(0, self.width)
+                        target_y = randint(0, self.height)
                         drag_x, drag_y = pygame.mouse.get_pos()
 
                         dy = (drag_y - target_y)/steps
                         dx = (drag_x - target_x)/steps
-                        self.bb.set_animation(Animation.SURFF)
+                        self.bb.set_animation(Animation.HOLD_HAND)
+
+                    if event.key == pygame.K_HASH:
+                        self.bb.select_random_animation()
 
                     if event.key == pygame.K_RETURN:
                         self.bb.handle_animation()
@@ -132,7 +135,7 @@ class Game:
                     target_x = None
                     target_y = None
                     step = 0
-                    self.bb.set_animation(Animation.WEED)
+                    self.bb.set_animation(Animation.DEFAULT)
                     self.bb.handle_animation()
                     self.bb.set_location((600, 400))
 

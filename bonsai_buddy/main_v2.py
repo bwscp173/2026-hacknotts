@@ -3,14 +3,19 @@ from enum import Enum
 import shutil
 import pygame
 import os
+import random
 
 class Animation(Enum):
     DEFAULT = 0
-    HOLD_HAND = 48
-    WEED = 344
     SURF = [0,9]
     CLAP = [10,14]
     SURFF = [15,39]
+    HOLD_HAND = 48
+    SPINNING_GLOBE = [40,87]
+    BEATING = [101,108]
+    SUN_GLASSES = [108,136]
+
+    WEED = 344
 
 def generate_bonsai_buddy_images():
     if os.path.isdir("bonsai_buddy/images"):
@@ -72,7 +77,7 @@ class bonsai_buddy:
         print(self.frame_index)
 
     def set_animation(self, animation:Animation):
-        print("ANIMATION VALUE:",animation.value)
+        print("ANIMATION VALUE:",animation, animation.value)
         self.animation = animation
         if type(animation.value) == int:
             self.animation_start_frame = animation.value
@@ -98,8 +103,8 @@ class bonsai_buddy:
         if self.frame_index > self.animation_end_frame:
             self.frame_index = self.animation_start_frame
 
-    def select_random_animation():
-
+    def select_random_animation(self):
+        self.set_animation(random.choice([Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]))
 
 if __name__ == "__main__":
     # generate_bonsai_buddy_images()
