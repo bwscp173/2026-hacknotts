@@ -37,12 +37,22 @@ class bonsai_buddy:
         self.surface = pygame.image.load("bonsai_buddy/images/bonsai-buddy-0.png")
         self.surface.convert()
         self.frame_index = 0
-        
-    def draw(self, screen, x, y):
-        screen.blit(self.surface, (x, y))
+        self.location = [0, 0]
+
+    def set_location(self, location:tuple):
+        self.location = location
+
+    def set_x(self, x:int):
+        self.location = (x, self.location[1])
+
+    def set_y(self, y:int):
+        self.location = (self.location[0], y)
+    
+    def draw(self, screen):
+        screen.blit(self.surface, self.location)
 
     def set_frame(self, frame_index:int):
-        self.frame_index = frame_index
+        self.frame_index = (frame_index) % 343
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
 
@@ -50,6 +60,8 @@ class bonsai_buddy:
         self.frame_index = (self.frame_index+1) % 343
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
+
+    
 
 if __name__ == "__main__":
     # generate_bonsai_buddy_images()

@@ -35,10 +35,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     running = False
 
+            self.bb.set_location(pygame.mouse.get_pos())
+
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
             self.bb.increment_frame()
-            self.bb.draw(self.screen, 20, 20)
+            self.bb.draw(self.screen)
             self.update()
 
         pygame.quit()
