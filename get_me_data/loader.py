@@ -1,4 +1,5 @@
 import dotenv
+from random import random, randrange
 import os
 import sqlite3
 
@@ -10,6 +11,7 @@ DB_PATH = os.getenv("DB_PATH")
 
 if DB_PATH is None:
     raise Exception("No DB path provided")
+
 
 def get_symbols():
     conn = sqlite3.connect(DB_PATH)
@@ -27,6 +29,7 @@ class Stock:
     def __init__(self, symbol):
         self.__symbol = symbol
 
+        # {date (str): {open: float, high: float, low: float, close: float, volume: int}}
         self.__data = {}
         self.__load()
 
@@ -34,7 +37,7 @@ class Stock:
         return list(self.__data.keys())
 
     def dates(self):
-        """ Iterates over all dates / months"""
+        """Iterates over all dates / months"""
         for date in self.get_dates():
             yield date
 
@@ -61,7 +64,7 @@ class Stock:
                 "high": s_high,
                 "low": s_low,
                 "close": s_close,
-                "volume": s_volume
+                "volume": s_volume,
             }
             for _, __, date, s_open, s_close, s_high, s_low, s_volume in results
         }
@@ -71,3 +74,6 @@ class Stock:
 
         datetime_date = datetime.strptime(date_str, "%Y-%m-%d")
         return datetime_date.year, datetime_date.month, datetime_date.day
+
+    def generate_reasonable_price_for(self, date: str):
+        return round(self.__data[date]["low"] + self.__data[date]["high"] / 2, 2)
