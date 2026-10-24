@@ -23,6 +23,12 @@ class StockList:
             diffs[stock] = 100 * ((self.stocks[stock]["buy_price"] - self.stocks[stock]["yesterday_price"]) / self.stocks[stock]["yesterday_price"])
         return diffs
 
+    def get_selected_stock(self):
+        for stock in self.stocks:
+            if self.stocks[stock]["is_selected"]:
+                return stock
+        return None
+
     def draw(self, screen, global_mouse, is_left_clicking):
         difs = self.calc_diffs_to_yesterday()
         for i, stock in enumerate(self.stocks):

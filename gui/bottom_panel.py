@@ -25,9 +25,11 @@ class BottomPanel:
         )
         self.to_draw.append(self.cash_panel)
 
-    def update_data(self, new_net_worth: float, new_cash: float):
-        self.net_worth = new_net_worth
-        self.cash = new_cash
+    def update_data(self, new_net_worth: float | None, new_cash: float | None):
+        if new_net_worth is not None:
+            self.net_worth = new_net_worth
+        if new_cash is not None:
+            self.cash = new_cash
         self.net_worth_panel.change_text(f"Total portfolio value: ${self.net_worth:.2f}")
         self.cash_panel.change_text(f"Cash: ${self.cash:.2f}")
 

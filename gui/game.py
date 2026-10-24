@@ -26,11 +26,25 @@ class Game:
         self.stock_objects: list[Stock] = []
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
         self.cash = 10_000.00  # 10k
+        self.volume_to_buy_or_sell = 0
         pygame.display.set_caption("Big money!!!!")
 
         # TODO: add screen data
 
         self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("IBM"))
+
+        def dincr_volume(amt: int):
+            self.volume_to_buy_or_sell += amt
+            if self.volume_to_buy_or_sell < 0:
+                self.volume_to_buy_or_sell = 0
+            print(f"Volume to buy/sell: {self.volume_to_buy_or_sell}")
+
+        def purchase_stock(stock: str):
+            self.purchase_or_sell_stock(stock, self.volume_to_buy_or_sell)
+
+        def sell_stock(stock: str):
+            self.purchase_or_sell_stock(stock, -self.volume_to_buy_or_sell)
+
 
         self.right_panel = RightPanel(
             int(self.width * (5 / 8)) + 20,
@@ -38,6 +52,9 @@ class Game:
             int(self.width * (3 / 8)) - 30,
             self.height - 20,
             self.stocks,
+            dincr_volume,
+            purchase_stock,
+            sell_stock
         )
         self.bottom_panel = BottomPanel(10, int(self.height * (5 / 8)) + 20, int(self.width * (5 / 8)),
                                         int(self.height * (3 / 8)) - 30)
@@ -51,6 +68,34 @@ class Game:
         self.bottom_panel.update_data(self.cash, self.cash)
         self.bb = bonsai_buddy(self.screen)
         self.update_graph()
+
+    def purchase_or_sell_stock(self, stock: str, quantity: int):
+        print(f"Attempting to purchase/sell {quantity} of {stock}")
+        if not isinstance(quantity, int):
+            raise ValueError("Quantity must be an integer!")
+
+        if not self.stocks.get(stock):
+            print("Stock does not exist!")
+            return
+
+        if quantity > 0 and self.cash < self.stocks[stock]["buy_price"] * quantity:
+            print("Not enough cash to buy stock!")
+            return
+        elif quantity < 0 and self.stocks[stock]["total_stocks_owned"] < abs(quantity):
+            print("Not enough stock to sell!")
+            return
+
+        self.cash -= self.stocks[stock]["buy_price"] * quantity
+        self.stocks[stock]["total_stocks_owned"] += quantity
+        self.stocks[stock]["total_investment"] += self.stocks[stock]["buy_price"] * quantity
+        if quantity > 0:
+            print(
+                f"Bought {quantity} of {stock} for ${self.stocks[stock]['buy_price'] * quantity:.2f}. Cash left: ${self.cash:.2f}")
+        else:
+            print(
+                f"Sold {abs(quantity)} of {stock} for ${self.stocks[stock]['buy_price'] * abs(quantity):.2f}. Cash left: ${self.cash:.2f}")
+
+        self.bottom_panel.update_data(None, self.cash)
 
     def initialise_stock_list(self, date):
         """
@@ -140,6 +185,9 @@ class Game:
 
                 if event.type == pygame.MOUSEMOTION:
                     self.bb.set_location(pygame.mouse.get_pos())
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pressed = True
 
             if target_x is not None:
                 step += 1
