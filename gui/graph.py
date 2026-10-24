@@ -92,7 +92,6 @@ class Graph:
         for i in range(len(data_points)-1, -1, -1):
             data_point = data_points[i]
 
-            missing_data = False
             if data_point is None:
                 x_offset += day_width
                 continue
@@ -108,9 +107,6 @@ class Graph:
 
             average = (low_y + high_y) / 2
             colour = (255, 0, 0) if average < last_average else (0, 255, 0)
-
-            if missing_data:
-                colour = (247, 152, 25)
 
             pygame.draw.rect(
                 self.surface,
