@@ -2,6 +2,8 @@ import dotenv
 import os
 import sqlite3
 
+from datetime import datetime
+
 dotenv.load_dotenv()
 
 DB_PATH = os.getenv("DB_PATH")
@@ -26,6 +28,7 @@ class Stock:
         self.__symbol = symbol
 
         self.__data = {}
+        self.__load()
 
     def get_dates(self):
         return list(self.__data.keys())
@@ -39,6 +42,9 @@ class Stock:
 
     def get_date_for_date(self, date):
         return self.__data[date]
+
+    def has_date(self, date_string):
+        return date_string in self.__data
 
     def __load(self):
         conn = sqlite3.connect(DB_PATH)
@@ -59,3 +65,9 @@ class Stock:
             }
             for _, __, date, s_open, s_close, s_high, s_low, s_volume in results
         }
+
+    def get_latest_date(self):
+        date_str = list(self.__data.keys())[0]
+
+        datetime_date = datetime.strptime(date_str, "%Y-%m-%d")
+        return datetime_date.year, datetime_date.month, datetime_date.day
