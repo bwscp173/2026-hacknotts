@@ -28,7 +28,8 @@ class Game:
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
         self.stock_objects: list[Stock] = []
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
-        self.cash = 10_000.00  # 10k
+        self.start_cash = 10_000.00  # 10k
+        self.cash = self.start_cash
         self.volume_to_buy_or_sell = 0
         pygame.display.set_caption("Big money!!!!")
 
@@ -149,6 +150,43 @@ class Game:
     def end_screen_loop(self):
         sub_running = True
 
+        font = pygame.font.SysFont("Monospace", 32)
+
+        pygame.draw.rect(
+            self.screen,
+            (40, 40, 40),
+            (100, 100, 600, 400)
+        )
+
+        rect = font.render(f"Final net worth: £{self.bottom_panel.net_worth}", True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 150)
+        )
+
+
+        gained_percentage = round(((self.bottom_panel.net_worth / self.start_cash ) - 1) * 100, 2)
+        text = f"That means you made {('+' if gained_percentage > 0 else '')}{gained_percentage}%"
+
+        rect = font.render(text, True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 200)
+        )
+
+        rect = font.render("The world lost over", True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 300)
+        )
+
+        rect = font.render("$5 trillion in market cap.", True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 350)
+        )
+
+        if gained_percentage < 0:
+            rect = font.render("Maybe try again.", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 450)
+            )
 
 
         while sub_running:
@@ -220,6 +258,9 @@ class Game:
 
                     if event.key == pygame.K_F1:
                         self.next_day()
+
+                    if event.key == pygame.K_F3:
+                        self.end_screen_loop()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pressed = True
