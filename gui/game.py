@@ -108,6 +108,7 @@ class Game:
 
         target_x = None
         target_y = None
+        STEALMOUSE = False
         step = 0
 
         clock = pygame.time.Clock()
@@ -119,18 +120,6 @@ class Game:
                     running = False
                 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        self.bb.draw(self.screen)
-                        
-                        steps = 30
-                        target_x = randint(0, self.width)
-                        target_y = randint(0, self.height)
-                        drag_x, drag_y = pygame.mouse.get_pos()
-
-                        dy = (drag_y - target_y)/steps
-                        dx = (drag_x - target_x)/steps
-                        self.bb.set_animation(Animation.HOLD_HAND)
-
                     if event.key == pygame.K_HASH:
                         self.bb.select_random_animation()
 
@@ -143,21 +132,43 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pressed = True
 
-            if target_x is not None:
-                step += 1
-                drag_x -= dx
-                drag_y -= dy
-                pygame.mouse.set_pos(drag_x, drag_y)
-                pyautogui.click()
-                self.bb.handle_animation()
-                self.bb.set_location((drag_x-160, drag_y-80))
-                if int(target_x) == int(drag_x) or step >= steps:
-                    target_x = None
-                    target_y = None
-                    step = 0
-                    self.bb.set_animation(Animation.DEFAULT)
+            if self.bb.can_do_event():
+                response = self.bb.random_event()
+                if response == "STEALMOUSE":
+                    STEALMOUSE=True
+                    response = None
+
+
+            if STEALMOUSE:
+                self.bb.draw(self.screen)
+                        
+                steps = 30
+                target_x = randint(0, self.width)
+                target_y = randint(0, self.height)
+                drag_x, drag_y = pygame.mouse.get_pos()
+
+                dy = (drag_y - target_y)/steps
+                dx = (drag_x - target_x)/steps
+                self.bb.set_animation(Animation.HOLD_HAND)
+
+                if target_x is not None:
+                    step += 1
+                    drag_x -= dx
+                    drag_y -= dy
+                    pygame.mouse.set_pos(drag_x, drag_y)
+                    pyautogui.click()
                     self.bb.handle_animation()
-                    self.bb.set_location((600, 400))
+                    self.bb.set_location((drag_x-160, drag_y-80))
+                    if int(target_x) == int(drag_x) or step >= steps:
+                        target_x = None
+                        target_y = None
+                        step = 0
+                        self.bb.set_animation(Animation.DEFAULT)
+                        self.bb.handle_animation()
+                        self.bb.set_location((600, 400))
+                        STEALMOUSE = False
+
+            self.bb.handle_animation()
 
             self.fill((20, 20, 20))
             self.graph.draw(self.screen, 10, 10)

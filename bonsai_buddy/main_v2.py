@@ -1,9 +1,11 @@
 from PIL import Image
 from enum import Enum
+import datetime
 import shutil
 import pygame
 import os
 import random
+import subprocess
 
 class Animation(Enum):
     DEFAULT = 0
@@ -14,8 +16,9 @@ class Animation(Enum):
     SPINNING_GLOBE = [40,87]
     BEATING = [101,108]
     SUN_GLASSES = [108,136]
-
     WEED = 344
+
+messages = ["monster yummy! <3"]
 
 def generate_bonsai_buddy_images():
     if os.path.isdir("bonsai_buddy/images"):
@@ -52,6 +55,8 @@ class bonsai_buddy:
         self.screen = screen
         self.animation = Animation.WEED
         self.set_animation(self.animation)
+        self.last_event = datetime.datetime.now()
+        self.event_interval = 5
 
     def set_location(self, location:tuple):
         self.location = location
@@ -104,6 +109,31 @@ class bonsai_buddy:
     def select_random_animation(self):
         self.set_animation(random.choice([Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]))
 
-if __name__ == "__main__":
-    # generate_bonsai_buddy_images()
-    pass
+    def select_message():
+        return random.choices(messages)
+    
+    def open_window(self):
+        self.last_event = datetime.datetime.now()
+        os.system("start cmd /c whoami")
+
+    def can_do_event(self):
+        next_event = self.last_event + datetime.timedelta(seconds=self.event_interval)
+        return next_event < datetime.datetime.now()
+
+    def random_event(self):
+        self.last_event = datetime.datetime.now()
+        select = random.randint(0,3)
+        if select == 0 or select == 1:
+            self.select_random_animation()
+            self.handle_animation()
+        if select == 2:
+            self.open_window()
+            self.open_window()
+            self.open_window()
+        if select == 3:
+            return "STEALMOUSE"
+    
+# if __name__ == "__main__":
+#     bonsai_buddy.open_window()
+#     bonsai_buddy.open_window()
+#     bonsai_buddy.open_window()
