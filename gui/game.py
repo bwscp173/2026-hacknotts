@@ -41,7 +41,7 @@ class Game:
 
         self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("IBM"), self)
 
-        def dincr_volume(amt: int):
+        def change_volume(amt: int):
             self.volume_to_buy_or_sell += amt
             if self.volume_to_buy_or_sell < 0:
                 self.volume_to_buy_or_sell = 0
@@ -61,7 +61,7 @@ class Game:
             self.height - 20,
             self.stocks,
             self.graph,
-            dincr_volume,
+            change_volume,
             purchase_stock,
             sell_stock
         )
