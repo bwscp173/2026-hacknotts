@@ -1,6 +1,6 @@
 we will use 'https://www.alphavantage.co/documentation/' for historical data
 
-- [ ] Add volume counter next to incrs
+- [x] Add volume counter next to incrs
 - [ ] Add news
 - [ ] Make bonsai buddy say stuff
 - [ ] Standardise fonts
