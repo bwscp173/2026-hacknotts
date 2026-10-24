@@ -1,3 +1,5 @@
+from typing import Callable
+
 import pygame
 
 from get_me_data import loader
@@ -6,7 +8,7 @@ from gui.text_panel import TextPanel
 from gui.stock_list import StockList
 
 class RightPanel:
-    def __init__(self, x, y, width, height, stocks, graph):
+    def __init__(self, x, y, width, height, stocks, graph, dec_or_inc_volume: Callable, purchase: Callable, sell: Callable):
         self.x = x
         self.y = y
         self.width = width
@@ -23,48 +25,44 @@ class RightPanel:
         )
         self.to_draw.append(self.volume_panel)
 
-        do_plus_ten = lambda: print("Plus ten!")
         self.plus_ten = Button(
             x=140,
             y=self.height * 5 // 8 - 80,
             width=55,
             height=35,
             text="+10",
-            call_on_click=do_plus_ten,
+            call_on_click=lambda: dec_or_inc_volume(10)
         )
         self.to_draw.append(self.plus_ten)
 
-        do_minus_ten = lambda: print("Minus tjen!")
         self.minus_ten = Button(
             x=205,
             y=self.height * 5 // 8 - 80,
             width=55,
             height=35,
             text="-10",
-            call_on_click=do_minus_ten,
+            call_on_click=lambda : dec_or_inc_volume(-10)
         )
         self.to_draw.append(self.minus_ten)
 
-        do_plus_hundred = lambda: print("Plus hundred!")
         self.plus_hundred = Button(
             x=140,
             y=self.height * 5 // 8 - 35,
             width=55,
             height=35,
             text="+100",
-            call_on_click=do_plus_hundred,
+            call_on_click=lambda: dec_or_inc_volume(100),
         )
 
         self.to_draw.append(self.plus_hundred)
 
-        do_minus_hundred = lambda: print("Minus hundred!")
         self.minus_hundred = Button(
             x=205,
             y=self.height * 5 // 8 - 35,
             width=55,
             height=35,
             text="-100",
-            call_on_click=do_minus_hundred,
+            call_on_click=lambda: dec_or_inc_volume(-100),
         )
         self.to_draw.append(self.minus_hundred)
 
@@ -74,7 +72,7 @@ class RightPanel:
             width=120,
             height=30,
             text="Buy",
-            call_on_click=lambda: print("Buy button clicked"),
+            call_on_click=lambda: purchase(self.stocks_list.get_selected_stock()),
         )
         self.to_draw.append(self.buy_button)
 
@@ -84,9 +82,12 @@ class RightPanel:
             width=120,
             height=30,
             text="Sell",
-            call_on_click=lambda: print("Sell button clicked"),
+            call_on_click=lambda: sell(self.stocks_list.get_selected_stock()),
         )
         self.to_draw.append(self.sell_button)
+
+    def on_volume_change(self, new_quantity: int):
+        self.volume_panel.change_text(f"{new_quantity}\n${new_quantity * self.stocks_list.get_cur_stock_buy():.2f}")
 
     def draw(self, screen, global_mouse, is_left_clicking: bool):
         local_mouse = (global_mouse[0] - self.x, global_mouse[1] - self.y)
