@@ -18,7 +18,7 @@ class Graph:
         self.update(d, m, y, 30)
 
 
-    def update(self, current_day: int, current_month: int, current_year: int, history_dats: int):
+    def update(self, current_day: int, current_month: int, current_year: int, history_days: int):
         self.surface.fill((0, 0, 0))
 
         data_points = []
@@ -26,7 +26,7 @@ class Graph:
         max_value = -math.inf
 
         date_str = f"{current_year:04d}-{current_month:02d}-{current_day:02d}"
-        for day in range(history_dats):
+        for day in range(history_days):
             if self.__stock.has_date(date_str):
                 data = self.__stock.get_date_for_date(date_str)
                 data_points.append(data)
@@ -42,16 +42,53 @@ class Graph:
             parsed = datetime.strptime(date_str, "%Y-%m-%d")
             date_str = (parsed - timedelta(days=1)).strftime("%Y-%m-%d")
 
-        day_width = self.surface.get_width() / len(data_points)
+        day_width = (self.surface.get_width() - 40) / len(data_points)
+
+        font = pygame.font.SysFont("monospace", 10)
+
+        step = (max_value - min_value) / 5
+        for i in range(6):
+            y_offset = (self.surface.get_height() - 32) * (1 - (i/5))
+
+            rect = font.render(str(round(min_value + (step * i), 1)), True, (255, 255, 255))
+
+            self.surface.blit(
+                rect, (1, y_offset)
+            )
+
+            pygame.draw.line(
+                self.surface,
+                (40, 40, 40),
+                (40, y_offset+5),
+                (self.surface.get_width(), y_offset+5)
+            )
+
+        date_str = f"{current_year:04d}-{current_month:02d}-{current_day:02d}"
+
+        for i in range(history_days//7 + 1):
+            pygame.draw.line(
+                self.surface,
+                (40, 40, 40),
+                (40 + (i * 7 * day_width), 0),
+                (40 + (i * 7 * day_width), self.surface.get_height()-27),
+            )
+
+            rect = font.render(date_str, True, (255, 255, 255))
+
+            self.surface.blit(
+                rect, (self.surface.get_width() - (((i+1) * 7 * day_width) - rect.get_width()), self.surface.get_height()-15)
+            )
+
+            parsed = datetime.strptime(date_str, "%Y-%m-%d")
+            date_str = (parsed - timedelta(days=7)).strftime("%Y-%m-%d")
 
         y_change = max_value - min_value
-        y_scale = self.surface.get_height() / y_change
+        y_scale = (self.surface.get_height() - 32) / y_change
         y_offset = min_value
 
         last_average = 0
-        last_datapoint = None
 
-        x_offset = 0
+        x_offset = 40
         for i in range(len(data_points)-1, -1, -1):
             data_point = data_points[i]
 
@@ -60,13 +97,9 @@ class Graph:
                 x_offset += day_width
                 continue
 
-                data_point = last_datapoint
-                missing_data = True
-
             values = [data_point["high"], data_point["low"], data_point["close"], data_point["open"]]
             values.sort()
 
-            last_datapoint = data_point
             high_y = (values[0] - y_offset)  * y_scale
             low_y = (values[3]  - y_offset) * y_scale
 
@@ -83,8 +116,8 @@ class Graph:
                 self.surface,
                 colour,
                 (
-                    x_offset, self.surface.get_height() - close_y,
-                    day_width, abs(open_y - close_y)
+                    x_offset+1, self.surface.get_height() - close_y - 30,
+                    day_width-2, abs(open_y - close_y)
                 )
             )
 
@@ -92,15 +125,15 @@ class Graph:
             pygame.draw.line(
                 self.surface,
                 colour,
-                (line_x, self.surface.get_height() - close_y),
-                (line_x, self.surface.get_height() - low_y),
+                (line_x, self.surface.get_height() - close_y - 30),
+                (line_x, self.surface.get_height() - low_y - 30),
             )
 
             pygame.draw.line(
                 self.surface,
                 colour,
-                (line_x, self.surface.get_height() - open_y),
-                (line_x, self.surface.get_height() - high_y),
+                (line_x, self.surface.get_height() - open_y - 30),
+                (line_x, self.surface.get_height() - high_y - 30),
             )
 
 
