@@ -1,8 +1,11 @@
 import pygame
+from random import randint
 
 from gui.right_panel import RightPanel
 
 from .graph import Graph
+from bonsai_buddy.main_v2 import bonsai_buddy
+import time
 
 pygame.init()
 
@@ -33,6 +36,8 @@ class Game:
         #    - banzibuddy interactions
         #    - current profit
 
+        self.bb = bonsai_buddy(self.screen)
+
     def fill(self, color):
         self.screen.fill(color)
 
@@ -41,11 +46,50 @@ class Game:
 
     def run(self):
         running = True
+
+        target_x = None
+        target_y = None
+        step = 0
         while running:
             mouse_pressed = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        print("SPACE DOWN")
+                        self.bb.draw(self.screen)
+                        
+                        steps = 500
+                        target_x = randint(0, self.width-200)
+                        target_y = randint(0, self.height-200)
+                
+                        drag_x, drag_y = pygame.mouse.get_pos()
+                        dy = (drag_y - target_y)/steps
+                        dx = (drag_x - target_x)/steps
+                        self.bb.set_frame(48)
+
+                    if event.key == pygame.K_RETURN:
+                        print("RETURN DOWN")
+                        self.bb.increment_frame()
+
+
+                if event.type == pygame.MOUSEMOTION:
+                    self.bb.set_location(pygame.mouse.get_pos())
+
+            if target_x is not None:
+                step += 1
+                drag_x -= dx
+                drag_y -= dy
+                pygame.mouse.set_pos(drag_x +160, drag_y+80)
+                self.bb.set_location((drag_x, drag_y))
+                if int(target_x) == int(drag_x) or step >= steps:
+                    target_x = None
+                    target_y = None
+                    step = 0
+                    self.bb.set_frame(0)
+                    
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pressed = True
@@ -53,6 +97,7 @@ class Game:
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
+            self.bb.draw(self.screen)
             self.update()
 
         pygame.quit()

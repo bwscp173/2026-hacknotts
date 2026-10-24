@@ -4,3 +4,5 @@ venv/*
 pyproject.toml
 
 /.idea
+/get_me_data/__pycache__
+get_me_data/__pycache__/loader.cpython-312.pyc
