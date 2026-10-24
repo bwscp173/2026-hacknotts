@@ -6,6 +6,7 @@ from .graph import Graph
 
 pygame.init()
 
+from get_me_data.loader import Stock
 
 class Game:
     def __init__(self, width, height):
@@ -15,7 +16,8 @@ class Game:
         pygame.display.set_caption("Big money!!!!")
 
         # TODO: add screen data
-        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), None)
+
+        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("AMD"))
 
         self.right_panel = RightPanel(
             int(self.width * (5 / 8)) + 20,

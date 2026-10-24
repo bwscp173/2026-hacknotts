@@ -35,18 +35,15 @@ def init_db():
     conn.close()
 
 
-def fetch(symbol: str, year: int, month: int, interval: str = "5min"):
-    time.sleep(1)
-    month_string = f"{year:04d}-{month:02d}"
-
-    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&interval={interval}&month={month_string}&apikey={API_KEY}'
-
+def fetch(symbol: str):
+    url = f'''https://api.marketstack.com/v2/eod?symbols={symbol}&access_key={API_KEY}&limit=100&date_from=2000-01-01&date_to=2002-12-31'''
+    print(url)
     r = requests.get(url)
     data = r.json()
 
 
     print(data)
-
+    return
     trading_data = data['Time Series (Daily)']
 
     conn = sqlite3.connect(DB_PATH)
