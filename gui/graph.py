@@ -28,7 +28,7 @@ class Graph:
         date_str = f"{current_year:04d}-{current_month:02d}-{current_day:02d}"
         for day in range(history_days):
             if self.__stock.has_date(date_str):
-                data = self.__stock.get_date_for_date(date_str)
+                data = self.__stock.get_data_for_date(date_str)
                 data_points.append(data)
 
                 for key in ("open", "high", "low", "close"):

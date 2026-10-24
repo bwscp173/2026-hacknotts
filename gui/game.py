@@ -22,6 +22,7 @@ class Game:
         self.screen = pygame.display.set_mode((width, height))
         self.current_date = "2000-03-01"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
+        self.stock_objects: list[Stock] = []
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
         pygame.display.set_caption("Big money!!!!")
 
@@ -58,6 +59,7 @@ class Game:
         has_selected = False
         for sym in stock_syms:
             stock = loader.Stock(sym)  # this is so slow  TODO: fix?
+            self.stock_objects.append(stock)
             stocks[sym] = {}
             stocks[sym]["buy_price"] = stock.generate_reasonable_price_for(date)
             stocks[sym]["yesterday_price"] = stocks[sym][
@@ -75,7 +77,16 @@ class Game:
         next_day = parsed + timedelta(days=1)
         self.current_date = next_day.strftime("%Y-%m-%d")
 
+        self.increment_trading_day()
         self.update_graph()
+
+    def increment_trading_day(self):
+        for stock_obj in self.stock_objects:
+            # {date (str): {open: float, high: float, low: float, close: float, volume: int}}
+            self.stocks[stock_obj.symbol]["yesterday_price"] = self.stocks[stock_obj.symbol]["buy_price"]
+            if stock_obj.has_date(self.current_date):
+                self.stocks[stock_obj.symbol]["buy_price"] = stock_obj.generate_reasonable_price_for(self.current_date)
+
 
     def update_graph(self):
         parsed = datetime.strptime(self.current_date, "%Y-%m-%d")
