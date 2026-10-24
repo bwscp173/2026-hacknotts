@@ -106,7 +106,7 @@ class Graph:
             close_y = (values[2]  - y_offset) * y_scale
 
             average = (low_y + high_y) / 2
-            colour = (255, 0, 0) if average < last_average else (0, 255, 0)
+            colour = (255, 0, 0) if data_point["close"] < data_point["open"] else (0, 255, 0)
 
             pygame.draw.rect(
                 self.surface,
