@@ -34,15 +34,22 @@ class bonsai_buddy:
         pass
 
     def __init__(self):
-        img = pygame.image.load("bonsai_buddy/images/bonsai-buddy-0.png")
-        img.convert()
-        self.width = 200
-        self.height = 160
-        self.surface = pygame.Surface((self.width, self.height))
-
+        self.surface = pygame.image.load("bonsai_buddy/images/bonsai-buddy-0.png")
+        self.surface.convert()
+        self.frame_index = 0
+        
     def draw(self, screen, x, y):
         screen.blit(self.surface, (x, y))
 
+    def set_frame(self, frame_index:int):
+        self.frame_index = frame_index
+        self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
+        self.surface.convert()
+
+    def increment_frame(self):
+        self.frame_index = (self.frame_index+1) % 343
+        self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
+        self.surface.convert()
 
 if __name__ == "__main__":
     # generate_bonsai_buddy_images()

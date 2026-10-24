@@ -1,7 +1,7 @@
 import pygame
 
 from .graph import Graph
-
+from bonsai_buddy.main_v2 import bonsai_buddy
 
 class Game:
     def __init__(self, width, height):
@@ -20,6 +20,8 @@ class Game:
         #    - banzibuddy interactions
         #    - current profit
 
+        self.bb = bonsai_buddy()
+
     def fill(self, color):
         self.screen.fill(color)
 
@@ -35,6 +37,8 @@ class Game:
 
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
+            self.bb.increment_frame()
+            self.bb.draw(self.screen, 20, 20)
             self.update()
 
         pygame.quit()
