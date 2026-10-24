@@ -32,6 +32,9 @@ class Game:
         self.volume_to_buy_or_sell = 0
         pygame.display.set_caption("Big money!!!!")
 
+        self.running = False
+        self.cut_off_date = "2003-01-01"
+
         self.frames_per_day = 60
         self.min_frames_per_day = 20
 
@@ -138,6 +141,24 @@ class Game:
         self.increment_trading_day()
         self.update_graph()
 
+        if self.current_date == self.cut_off_date:
+            self.running = False
+            self.end_screen_loop()
+
+
+    def end_screen_loop(self):
+        sub_running = True
+
+
+
+        while sub_running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sub_running = False
+
+
+            pygame.display.flip()
+
     def increment_trading_day(self):
         total_stock_worth = 0
         for stock_obj in self.stock_objects:
@@ -161,7 +182,7 @@ class Game:
         pygame.display.flip()
 
     def run(self):
-        running = True
+        self.running = True
 
         target_x = None
         target_y = None
@@ -172,11 +193,11 @@ class Game:
 
         clock = pygame.time.Clock()
 
-        while running:
+        while self.running:
             mouse_pressed = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
