@@ -20,6 +20,7 @@ class RightPanel:
 
         self.stocks_list = StockList(stocks, graph, 525, 15, 260, 250)
 
+        # placeholder text should never show, every draw it is overwritten with the current volume to buy/sell
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80
         )

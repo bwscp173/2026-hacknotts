@@ -48,7 +48,6 @@ class Game:
             self.volume_to_buy_or_sell += amt
             if self.volume_to_buy_or_sell < 0:
                 self.volume_to_buy_or_sell = 0
-            print(f"Volume to buy/sell: {self.volume_to_buy_or_sell}")
 
         def purchase_stock(stock: str):
             self.purchase_or_sell_stock(stock, self.volume_to_buy_or_sell)
@@ -92,8 +91,8 @@ class Game:
             return
 
         if quantity > 0 and self.cash < self.stocks[stock]["buy_price"] * quantity:
-            print("Not enough cash to buy stock!")
-            return
+            quantity = max(0, int(self.cash // self.stocks[stock]["buy_price"]))
+            print(f"Not enough cash to buy! Buying {quantity} instead.")
         elif quantity < 0 and self.stocks[stock]["total_stocks_owned"] < abs(quantity):
             quantity = min(0, -self.stocks[stock]["total_stocks_owned"])
             print(f"Not enough stock to sell! Selling {abs(quantity)} instead.")

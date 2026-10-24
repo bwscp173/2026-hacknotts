@@ -16,12 +16,12 @@ class BottomPanel:
         self.surface.fill((30, 30, 30))
 
         self.net_worth_panel = TextPanel(
-            f"Net value: ${self.net_worth:.2f}", 10, 10, 350, 40
+            f"Net value: ${self.net_worth:.2f}", 10, 10, 250, 40
         )
         self.to_draw.append(self.net_worth_panel)
 
         self.cash_panel = TextPanel(
-            f"Cash: ${self.cash:.2f}", 10, 60, 350, 40
+            f"Cash: ${self.cash:.2f}", 10, 60, 250, 40
         )
         self.to_draw.append(self.cash_panel)
 
