@@ -1,6 +1,8 @@
 import pygame
 
 from get_me_data.loader import Stock
+from gui.graph import Graph
+
 
 class StockList:
     def __init__(self, stocks: dict[str, dict], graph, x, y, width, height):
@@ -25,7 +27,20 @@ class StockList:
             diffs[stock] = 100 * ((self.stocks[stock]["buy_price"] - self.stocks[stock]["yesterday_price"]) / self.stocks[stock]["yesterday_price"])
         return diffs
 
-    def toggle_stock(self, symbol: str):
+    def get_selected_stock(self):
+        for stock in self.stocks:
+            if self.stocks[stock]["is_selected"]:
+                return stock
+        raise ValueError("No selected stock??????")
+
+    def get_cur_stock_buy(self):
+        stock_str = self.get_selected_stock()
+        return self.stocks[stock_str]["buy_price"]
+
+    def set_selected_stock(self, symbol: str):
+        for stock_vals in self.stocks.values():
+            stock_vals["is_selected"] = False
+        self.stocks[symbol]["is_selected"] = True
         self.graph.change_stock(Stock(symbol))
 
     def draw(self, screen, global_mouse, is_left_clicking):
@@ -42,7 +57,7 @@ class StockList:
             )
 
             if is_left_clicking and collision_rect.collidepoint(*global_mouse):
-                self.toggle_stock(stock)
+                self.set_selected_stock(stock)
 
             name_rect = self.font.render(stock, True, (255, 255, 255))
             screen.blit(
