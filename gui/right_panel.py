@@ -1,21 +1,22 @@
 import pygame
 
+from get_me_data import loader
 from gui.button import Button
 from gui.text_panel import TextPanel
 
 
 class RightPanel:
-    def __init__(self, x, y, width, height, current_stock):
+    def __init__(self, x, y, width, height, stocks):
         self.x = x
         self.y = y
-        self.current_stock = current_stock
         self.width = width
         self.height = height
         self.surface = pygame.Surface((width, height))
+
         self.surface.fill((200, 200, 200))
         self.to_draw = []
-        # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
-        self.stocks: dict[str, dict] = {}
+
+        self.stocks_list = StocksList(stocks)
 
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80
@@ -33,7 +34,7 @@ class RightPanel:
         )
         self.to_draw.append(self.plus_ten)
 
-        do_minus_ten = lambda: print("Minus ten!")
+        do_minus_ten = lambda: print("Minus tjen!")
         self.minus_ten = Button(
             x=205,
             y=self.height * 5 // 8 - 80,
@@ -53,6 +54,7 @@ class RightPanel:
             text="+100",
             call_on_click=do_plus_hundred,
         )
+
         self.to_draw.append(self.plus_hundred)
 
         do_minus_hundred = lambda: print("Minus hundred!")
@@ -85,13 +87,6 @@ class RightPanel:
             call_on_click=lambda: print("Sell button clicked"),
         )
         self.to_draw.append(self.sell_button)
-
-    def initialise_stock_list(self, stocks: dict[str, dict]):
-        """
-        Stocks are {stock_name: current_price}
-        since you can't have bought anything before the first day (right?)
-        """
-        self.stock_list = stocks
 
     def draw(self, screen, global_mouse, is_left_clicking: bool):
         local_mouse = (global_mouse[0] - self.x, global_mouse[1] - self.y)

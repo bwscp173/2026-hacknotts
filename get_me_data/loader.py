@@ -1,4 +1,5 @@
 import dotenv
+from random import random, randrange
 import os
 import sqlite3
 
@@ -28,6 +29,7 @@ class Stock:
     def __init__(self, symbol):
         self.__symbol = symbol
 
+        # {date (str): {open: float, high: float, low: float, close: float, volume: int}}
         self.__data = {}
         self.__load()
 
@@ -72,3 +74,6 @@ class Stock:
 
         datetime_date = datetime.strptime(date_str, "%Y-%m-%d")
         return datetime_date.year, datetime_date.month, datetime_date.day
+
+    def generate_reasonable_price_for(self, date: str):
+        return round(self.__data[date]["low"] + self.__data[date]["high"] / 2, 2)
