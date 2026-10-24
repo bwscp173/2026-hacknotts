@@ -1,22 +1,45 @@
 import math
-
+import random
 import pygame
 from datetime import datetime, timedelta
 
 from get_me_data.loader import Stock
+
+def round_to_nearest_week(dt, start_day=0):
+    """
+    dt: datetime object
+    start_day: 0 for Monday, 6 for Sunday
+    """
+    dow = dt.weekday()  # 0=Mon, 6=Sun
+    # Days to subtract to get to the most recent start_day
+    days_to_subtract = (dow - start_day) % 7
+    prev_week = dt - timedelta(days=days_to_subtract)
+    next_week = prev_week + timedelta(weeks=1)
+
+    # Compare distances
+    if (next_week - dt).days < (dt - prev_week).days:
+        return next_week.replace(hour=0, minute=0, second=0, microsecond=0)
+    else:
+        return prev_week.replace(hour=0, minute=0, second=0, microsecond=0)
+
 
 class Graph:
     """
     The trading graph that attaches to the screen
     """
 
-    def __init__(self, width, height, data: Stock):
+    def __init__(self, width, height, data: Stock, game):
         self.surface = pygame.Surface((width, height))
         self.__stock = data
+        self.game = game
 
         y, m, d = self.__stock.get_latest_date()
         self.update(d, m, y, 30)
 
+    def change_stock(self, stock: Stock):
+        self.__stock = stock
+
+        self.game.update_graph()
 
     def update(self, current_day: int, current_month: int, current_year: int, history_days: int):
         self.surface.fill((0, 0, 0))
@@ -26,6 +49,7 @@ class Graph:
         max_value = -math.inf
 
         date_str = f"{current_year:04d}-{current_month:02d}-{current_day:02d}"
+
         for day in range(history_days):
             if self.__stock.has_date(date_str):
                 data = self.__stock.get_data_for_date(date_str)
@@ -41,6 +65,7 @@ class Graph:
 
             parsed = datetime.strptime(date_str, "%Y-%m-%d")
             date_str = (parsed - timedelta(days=1)).strftime("%Y-%m-%d")
+
 
         day_width = (self.surface.get_width() - 40) / len(data_points)
 
@@ -64,6 +89,8 @@ class Graph:
             )
 
         date_str = f"{current_year:04d}-{current_month:02d}-{current_day:02d}"
+        parsed = datetime.strptime(date_str, "%Y-%m-%d")
+        date_str = round_to_nearest_week(parsed, 0).strftime("%Y-%m-%d")
 
         for i in range(history_days//7 + 1):
             pygame.draw.line(
@@ -86,7 +113,6 @@ class Graph:
         y_scale = (self.surface.get_height() - 32) / y_change
         y_offset = min_value
 
-        last_average = 0
 
         x_offset = 40
         for i in range(len(data_points)-1, -1, -1):
@@ -113,7 +139,7 @@ class Graph:
                 colour,
                 (
                     x_offset+1, self.surface.get_height() - close_y - 30,
-                    day_width-2, abs(open_y - close_y)
+                    day_width-2, max(1, abs(open_y - close_y))
                 )
             )
 

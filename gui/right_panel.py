@@ -8,7 +8,7 @@ from gui.text_panel import TextPanel
 from gui.stock_list import StockList
 
 class RightPanel:
-    def __init__(self, x, y, width, height, stocks, dec_or_inc_volume: Callable, purchase: Callable, sell: Callable):
+    def __init__(self, x, y, width, height, stocks, graph, dec_or_inc_volume: Callable, purchase: Callable, sell: Callable):
         self.x = x
         self.y = y
         self.width = width
@@ -18,7 +18,7 @@ class RightPanel:
         self.surface.fill((30, 30, 30))
         self.to_draw = []
 
-        self.stocks_list = StockList(stocks, 525, 15, 260, 250)
+        self.stocks_list = StockList(stocks, graph, 525, 15, 260, 250)
 
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80

@@ -1,8 +1,11 @@
 import pygame
 
+from get_me_data.loader import Stock
+from gui.graph import Graph
+
 
 class StockList:
-    def __init__(self, stocks: dict[str, dict], x, y, width, height):
+    def __init__(self, stocks: dict[str, dict], graph, x, y, width, height):
         # stock_name: {buy_price: float, yesterday_price: float, is_selected: bool, 
         # total_stocks_owned: int, total_investment: float}
         self.stocks = stocks
@@ -10,6 +13,7 @@ class StockList:
         self.y = y
         self.width = width
         self.height = height
+        self.graph = graph
 
         self.unselected_bg_colour = (255, 0, 0)
         self.selected_bg_colour = (0, 255, 0)
@@ -29,14 +33,27 @@ class StockList:
                 return stock
         return None
 
+    def toggle_stock(self, symbol: str):
+        for stock_vals in self.stocks.values():
+            stock_vals["is_selected"] = False
+        self.stocks[symbol]["is_selected"] = True
+        self.graph.change_stock(Stock(symbol))
+
     def draw(self, screen, global_mouse, is_left_clicking):
         difs = self.calc_diffs_to_yesterday()
         for i, stock in enumerate(self.stocks):
+            collision_rect = pygame.Rect(
+                self.x, self.y+(self.height//len(self.stocks)*i)+1,
+                self.width, (self.height//len(self.stocks))-2
+            )
             pygame.draw.rect(
                 screen,
                 (50, 50, 50),
-                (self.x, self.y+(self.height//len(self.stocks)*i)+1, self.width, (self.height//len(self.stocks))-2),
+                collision_rect,
             )
+
+            if is_left_clicking and collision_rect.collidepoint(*global_mouse):
+                self.toggle_stock(stock)
 
             name_rect = self.font.render(stock, True, (255, 255, 255))
             screen.blit(

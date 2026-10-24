@@ -1,12 +1,21 @@
 from PIL import Image
-from random import randint
-from time import sleep
-from pyautogui import moveTo
+from enum import Enum
 import shutil
-import os
 import pygame
-import datetime
-from time import sleep
+import os
+import random
+
+class Animation(Enum):
+    DEFAULT = 0
+    SURF = [0,9]
+    CLAP = [10,14]
+    SURFF = [15,39]
+    HOLD_HAND = 48
+    SPINNING_GLOBE = [40,87]
+    BEATING = [101,108]
+    SUN_GLASSES = [108,136]
+
+    WEED = 344
 
 def generate_bonsai_buddy_images():
     if os.path.isdir("bonsai_buddy/images"):
@@ -41,6 +50,8 @@ class bonsai_buddy:
         self.frame_index = 0
         self.location = [0, 0]
         self.screen = screen
+        self.animation = Animation.WEED
+        self.set_animation(self.animation)
 
     def set_location(self, location:tuple):
         self.location = location
@@ -55,29 +66,44 @@ class bonsai_buddy:
         screen.blit(self.surface, self.location)
 
     def set_frame(self, frame_index:int):
-        self.frame_index = (frame_index) % 343
+        self.frame_index = (frame_index) % 345
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
 
     def increment_frame(self):
-        self.frame_index = (self.frame_index+1) % 343
+        self.frame_index = (self.frame_index+1) % 345
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
-        print(self.frame_index)
 
-    # def steal_mouse(self, screen_size:tuple, time2=2):
-    #     end_time = datetime.datetime.now() + datetime.timedelta(seconds=time2)
-    #     while datetime.datetime.now() < end_time:
-    #         x = randint(0,screen_size[0])
-    #         y = randint(0,screen_size[1])
+    def set_animation(self, animation:Animation):
+        self.animation = animation
+        if type(animation.value) == int:
+            self.animation_start_frame = animation.value
+            self.animation_end_frame = animation.value
 
-    #         moveTo(x, y, 1)
-    #         sleep(0.5)
-    #     print(end_time)
+            self.frame_index = self.animation_start_frame
+            return
+        self.animation_start_frame = animation.value[0]
+        self.animation_end_frame = animation.value[1]
 
+        self.frame_index = self.animation_start_frame
+
+    def handle_animation(self):
+        """run after set_animation() for start frame to be set"""
+        #print("handle_animation", self.animation, self.frame_index, self.animation_start_frame, self.animation_end_frame)
+        self.set_frame(self.frame_index)
+
+        if self.animation in  [Animation.DEFAULT, Animation.WEED, Animation.HOLD_HAND]:
+            return
+        
+        self.set_frame(self.frame_index)
+        self.frame_index += 1
+        if self.frame_index > self.animation_end_frame:
+            self.frame_index = self.animation_start_frame
+
+    def select_random_animation(self):
+        self.set_animation(random.choice([Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]))
 
 if __name__ == "__main__":
     # generate_bonsai_buddy_images()
     pass
-    moveTo(0,0)
-    #steal_mouse((500,500))
