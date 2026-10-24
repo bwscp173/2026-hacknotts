@@ -74,10 +74,8 @@ class bonsai_buddy:
         self.frame_index = (self.frame_index+1) % 345
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
-        print(self.frame_index)
 
     def set_animation(self, animation:Animation):
-        print("ANIMATION VALUE:",animation, animation.value)
         self.animation = animation
         if type(animation.value) == int:
             self.animation_start_frame = animation.value
