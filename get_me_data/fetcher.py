@@ -40,6 +40,7 @@ def fetch(symbol: str, year: int, month: int, interval: str = "5min"):
     month_string = f"{year:04d}-{month:02d}"
 
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&interval={interval}&month={month_string}&apikey={API_KEY}'
+
     r = requests.get(url)
     data = r.json()
 
