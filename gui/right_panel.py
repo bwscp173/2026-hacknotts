@@ -86,6 +86,9 @@ class RightPanel:
         )
         self.to_draw.append(self.sell_button)
 
+    def on_volume_change(self, new_quantity: int):
+        self.volume_panel.change_text(f"{new_quantity}\n${new_quantity * self.stocks_list.get_cur_stock_buy():.2f}")
+
     def draw(self, screen, global_mouse, is_left_clicking: bool):
         local_mouse = (global_mouse[0] - self.x, global_mouse[1] - self.y)
         for element in self.to_draw:

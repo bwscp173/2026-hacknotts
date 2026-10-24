@@ -92,8 +92,8 @@ class Game:
             print("Not enough cash to buy stock!")
             return
         elif quantity < 0 and self.stocks[stock]["total_stocks_owned"] < abs(quantity):
-            print("Not enough stock to sell!")
-            return
+            quantity = min(0, -self.stocks[stock]["total_stocks_owned"])
+            print(f"Not enough stock to sell! Selling {abs(quantity)} instead.")
 
         self.cash -= self.stocks[stock]["buy_price"] * quantity
         self.stocks[stock]["total_stocks_owned"] += quantity
@@ -221,6 +221,8 @@ class Game:
 
             self.fill((20, 20, 20))
             self.graph.draw(self.screen, 10, 10)
+            # I cannot be bothered to update on stock change
+            self.right_panel.on_volume_change(self.volume_to_buy_or_sell)
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
             self.bottom_panel.draw(self.screen)
             self.bb.draw(self.screen)
