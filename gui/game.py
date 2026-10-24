@@ -49,6 +49,7 @@ class Game:
         #    - current profit
 
         self.bb = bonsai_buddy(self.screen)
+        self.bb.set_location((600, 400))
         self.update_graph()
 
     def initialise_stock_list(self, date):
@@ -117,7 +118,7 @@ class Game:
                     if event.key == pygame.K_SPACE:
                         self.bb.draw(self.screen)
                         
-                        steps = 50
+                        steps = 30
                         target_x = randint(0, self.width)
                         target_y = randint(0, self.height)
                         drag_x, drag_y = pygame.mouse.get_pos()
