@@ -1,7 +1,12 @@
 from PIL import Image
+from random import randint
+from time import sleep
+from pyautogui import moveTo
 import shutil
 import os
 import pygame
+import datetime
+from time import sleep
 
 def generate_bonsai_buddy_images():
     if os.path.isdir("bonsai_buddy/images"):
@@ -30,14 +35,12 @@ def generate_bonsai_buddy_images():
             count += 1
 
 class bonsai_buddy:
-    def __init__(self):
-        pass
-
-    def __init__(self):
+    def __init__(self, screen):
         self.surface = pygame.image.load("bonsai_buddy/images/bonsai-buddy-0.png")
         self.surface.convert()
         self.frame_index = 0
         self.location = [0, 0]
+        self.screen = screen
 
     def set_location(self, location:tuple):
         self.location = location
@@ -61,8 +64,41 @@ class bonsai_buddy:
         self.surface = pygame.image.load(f"bonsai_buddy/images/bonsai-buddy-{self.frame_index}.png")
         self.surface.convert()
 
-    
+    def steal_mouse(self, screen_size:tuple, time2=2):
+        end_time = datetime.datetime.now() + datetime.timedelta(seconds=time2)
+        while datetime.datetime.now() < end_time:
+            x = randint(0,screen_size[0])
+            y = randint(0,screen_size[1])
+
+            moveTo(x, y, 1)
+            sleep(0.5)
+        print(end_time)
+
+
+    def moveTo(self, x, y, slow=0.003):
+        steps = 100
+
+        target_x = x
+        target_y = y
+
+        x, y = pygame.mouse.get_pos()
+        dy = (y - target_y)/steps
+        dx = (x - target_x)/steps
+
+        for _ in range(steps):
+            x -= dx
+            y -= dy
+            pygame.mouse.set_pos(x, y)
+            self.set_location((x, y))
+
+            self.draw(self.screen)
+            pygame.display.flip()
+
+            sleep(slow)
+
 
 if __name__ == "__main__":
     # generate_bonsai_buddy_images()
     pass
+    moveTo(0,0)
+    #steal_mouse((500,500))

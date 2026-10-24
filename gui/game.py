@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 
 from .graph import Graph
 from bonsai_buddy.main_v2 import bonsai_buddy
@@ -20,7 +21,7 @@ class Game:
         #    - banzibuddy interactions
         #    - current profit
 
-        self.bb = bonsai_buddy()
+        self.bb = bonsai_buddy(self.screen)
 
     def fill(self, color):
         self.screen.fill(color)
@@ -34,12 +35,21 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        print("SPACE DOWN")
+                        self.bb.draw(self.screen)
+                        self.bb.moveTo(randint(0, self.width), randint(0, self.height))
+                    if event.key == pygame.K_RETURN:
+                        print("RETURN DOWN")
+                        self.bb.increment_frame()
 
-            self.bb.set_location(pygame.mouse.get_pos())
+                if event.type == pygame.MOUSEMOTION:
+                    self.bb.set_location(pygame.mouse.get_pos())
 
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
-            self.bb.increment_frame()
             self.bb.draw(self.screen)
             self.update()
 
