@@ -1,0 +1,55 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="YE7m1faxPmPMXKYMbPiu">
+    <mxGraphModel dx="1414" dy="835" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="420" width="540" x="180" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="graph data" vertex="1">
+          <mxGeometry height="260" width="340" x="200" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="stock1" vertex="1">
+          <mxGeometry height="30" width="70" x="540" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="stock2" vertex="1">
+          <mxGeometry height="30" width="70" x="540" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="stock3" vertex="1">
+          <mxGeometry height="30" width="70" x="540" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="volume to buy/sell:" vertex="1">
+          <mxGeometry height="60" width="90" x="540" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="+10" vertex="1">
+          <mxGeometry height="30" width="40" x="630" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="+100" vertex="1">
+          <mxGeometry height="30" width="40" x="630" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="-10" vertex="1">
+          <mxGeometry height="30" width="40" x="670" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="-100" vertex="1">
+          <mxGeometry height="30" width="40" x="670" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="MORE STOCK" vertex="1">
+          <mxGeometry height="110" width="70" x="540" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="buy" vertex="1">
+          <mxGeometry height="35" width="50" x="540" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="sell" vertex="1">
+          <mxGeometry height="35" width="50" x="590" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="profit: -9999" vertex="1">
+          <mxGeometry height="30" width="80" x="200" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="AFYVYRUE-FdziAqtI3iW-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="bonsai buddy interactions" vertex="1">
+          <mxGeometry height="100" width="230" x="300" y="640" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
