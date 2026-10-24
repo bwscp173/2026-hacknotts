@@ -62,7 +62,7 @@ class Game:
                         print("SPACE DOWN")
                         self.bb.draw(self.screen)
                         
-                        steps = 100
+                        steps = 500
                         target_x = randint(0, self.width-200)
                         target_y = randint(0, self.height-200)
                 
@@ -81,8 +81,6 @@ class Game:
 
             if target_x is not None:
                 step += 1
-                print(drag_x, target_x)
-                time.sleep(0.003)
                 drag_x -= dx
                 drag_y -= dy
                 pygame.mouse.set_pos(drag_x +160, drag_y+80)
@@ -99,8 +97,8 @@ class Game:
 
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
-            self.bb.draw(self.screen)
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
+            self.bb.draw(self.screen)
             self.update()
 
         pygame.quit()
