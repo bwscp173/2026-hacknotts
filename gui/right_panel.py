@@ -3,7 +3,7 @@ import pygame
 from get_me_data import loader
 from gui.button import Button
 from gui.text_panel import TextPanel
-
+from gui.stock_list import StockList
 
 class RightPanel:
     def __init__(self, x, y, width, height, stocks):
@@ -16,7 +16,7 @@ class RightPanel:
         self.surface.fill((200, 200, 200))
         self.to_draw = []
 
-        self.stocks_list = StocksList(stocks)
+        self.stocks_list = StockList(stocks, 525, 15, 260, 250)
 
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80
@@ -97,4 +97,6 @@ class RightPanel:
                 element.draw(self.surface)
             else:
                 raise ValueError(f"Unknown element type: {type(element)}")
+
         screen.blit(self.surface, (self.x, self.y))
+        self.stocks_list.draw(screen, global_mouse, is_left_clicking)

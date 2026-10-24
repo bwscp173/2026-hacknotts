@@ -17,7 +17,7 @@ class Game:
         self.screen = pygame.display.set_mode((width, height))
         self.current_date = "2002-12-17"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
-        self.stocks: dict[str, dict] = self.initialise_stock_list(start_date)
+        self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
         pygame.display.set_caption("Big money!!!!")
 
         self.graph = Graph(
