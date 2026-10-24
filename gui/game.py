@@ -1,9 +1,15 @@
 import pygame
 from random import randint
 
+from gui.right_panel import RightPanel
+
 from .graph import Graph
 from bonsai_buddy.main_v2 import bonsai_buddy
 import time
+
+pygame.init()
+
+from get_me_data.loader import Stock
 
 class Game:
     def __init__(self, width, height):
@@ -13,7 +19,16 @@ class Game:
         pygame.display.set_caption("Big money!!!!")
 
         # TODO: add screen data
-        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), None)
+
+        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("AMD"))
+
+        self.right_panel = RightPanel(
+            int(self.width * (5 / 8)) + 20,
+            10,
+            int(self.width * (3 / 8)) - 30,
+            self.height - 20,
+            None,
+        )
 
         # TODO: add individual buttons
         #    - stock selector to switch graph
@@ -37,6 +52,7 @@ class Game:
         target_y = None
         step = 0
         while running:
+            mouse_pressed = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -78,9 +94,13 @@ class Game:
                     self.bb.set_frame(0)
                     
 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pressed = True
+
             self.fill((255, 255, 255))
             self.graph.draw(self.screen, 10, 10)
             self.bb.draw(self.screen)
+            self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
             self.update()
 
         pygame.quit()

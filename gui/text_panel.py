@@ -1,0 +1,18 @@
+import pygame
+
+
+class TextPanel:
+    def __init__(self, text, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        font = pygame.font.SysFont("Monospace", 16)
+        self.texts = []
+        for line in text.split("\n"):
+            self.texts.append(font.render(line, True, (200, 200, 200)))
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, (0, 0, 255), [self.x, self.y, self.width, self.height])
+        for i, line in enumerate(self.texts):
+            screen.blit(line, (self.x + 10, 8 + self.y + i * 20))
