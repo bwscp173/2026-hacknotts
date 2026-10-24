@@ -69,7 +69,7 @@ class Graph:
 
         day_width = (self.surface.get_width() - 40) / len(data_points)
 
-        font = pygame.font.SysFont("monospace", 10)
+        font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 10)
 
         step = (max_value - min_value) / 5
         for i in range(6):

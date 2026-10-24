@@ -9,7 +9,7 @@ class Button:
         self.height = height
         self.text = text
         self.call_on_click = call_on_click
-        font = pygame.font.SysFont("Monospace", 16)
+        font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 16)
         self.text = font.render(text, True, (200, 200, 200))
 
     def draw(self, screen, mouse, is_left_clicking: bool):
