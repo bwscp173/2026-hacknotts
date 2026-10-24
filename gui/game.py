@@ -1,3 +1,5 @@
+from datetime import timedelta, datetime
+
 import pygame
 from random import randint
 
@@ -18,7 +20,7 @@ class Game:
         self.width = width
         self.height = height
         self.screen = pygame.display.set_mode((width, height))
-        self.current_date = "2002-12-17"  # idk if this is even valid
+        self.current_date = "2000-03-01"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
         pygame.display.set_caption("Big money!!!!")
@@ -43,6 +45,7 @@ class Game:
         #    - current profit
 
         self.bb = bonsai_buddy(self.screen)
+        self.update_graph()
 
     def initialise_stock_list(self, date):
         """
@@ -66,6 +69,17 @@ class Game:
             stocks[sym]["total_investment"] = 0.0
 
         return stocks
+
+    def next_day(self):
+        parsed = datetime.strptime(self.current_date, "%Y-%m-%d")
+        next_day = parsed + timedelta(days=1)
+        self.current_date = next_day.strftime("%Y-%m-%d")
+
+        self.update_graph()
+
+    def update_graph(self):
+        parsed = datetime.strptime(self.current_date, "%Y-%m-%d")
+        self.graph.update(parsed.day, parsed.month, parsed.year, 30)
 
     def fill(self, color):
         self.screen.fill(color)
@@ -103,6 +117,10 @@ class Game:
                         print("RETURN DOWN")
                         self.bb.increment_frame()
 
+                    if event.key == pygame.K_F1:
+                        self.next_day()
+
+
 
                 if event.type == pygame.MOUSEMOTION:
                     self.bb.set_location(pygame.mouse.get_pos())
@@ -123,7 +141,7 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pressed = True
 
-            self.fill((255, 255, 255))
+            self.fill((20, 20, 20))
             self.graph.draw(self.screen, 10, 10)
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
             self.bb.draw(self.screen)

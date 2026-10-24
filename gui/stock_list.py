@@ -28,16 +28,16 @@ class StockList:
         for i, stock in enumerate(self.stocks):
             pygame.draw.rect(
                 screen,
-                (150, 150, 150),
+                (50, 50, 50),
                 (self.x, self.y+(self.height//len(self.stocks)*i)+1, self.width, (self.height//len(self.stocks))-2),
             )
 
-            name_rect = self.font.render(stock, True, (0, 0, 0))
+            name_rect = self.font.render(stock, True, (255, 255, 255))
             screen.blit(
                 name_rect, (self.x, self.y+(self.height//len(self.stocks)*i))
             )
 
-            current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True, (0, 0, 0))
+            current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True, (255, 255, 255))
             screen.blit(
                 current_price_rect, (self.x + 150 - current_price_rect.get_width(), self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(self.stocks)) - current_price_rect.get_height())//2)
             )
@@ -50,7 +50,7 @@ class StockList:
                 char = "↑"
 
             elif dif == 0:
-                colour = (50, 50, 50)
+                colour = (200, 200, 200)
                 char = " "
             else:
                 colour = (255, 0, 0)

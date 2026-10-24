@@ -13,7 +13,7 @@ class RightPanel:
         self.height = height
         self.surface = pygame.Surface((width, height))
 
-        self.surface.fill((200, 200, 200))
+        self.surface.fill((30, 30, 30))
         self.to_draw = []
 
         self.stocks_list = StockList(stocks, 525, 15, 260, 250)
