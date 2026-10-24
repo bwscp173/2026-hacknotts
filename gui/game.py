@@ -7,7 +7,7 @@ from get_me_data import loader
 from gui.right_panel import RightPanel
 
 from .graph import Graph
-from bonsai_buddy.main_v2 import bonsai_buddy
+from bonsai_buddy.main_v2 import bonsai_buddy, Animation
 import time
 
 pygame.init()
@@ -112,45 +112,43 @@ class Game:
                 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        print("SPACE DOWN")
                         self.bb.draw(self.screen)
                         
                         steps = 500
-                        target_x = randint(0, self.width-200)
-                        target_y = randint(0, self.height-200)
-                
+                        target_x = randint(0, self.width)
+                        target_y = randint(0, self.height)
                         drag_x, drag_y = pygame.mouse.get_pos()
+
                         dy = (drag_y - target_y)/steps
                         dx = (drag_x - target_x)/steps
-                        self.bb.set_frame(48)
+                        self.bb.set_animation(Animation.HOLD_HAND)
+
+                    if event.key == pygame.K_HASH:
+                        self.bb.select_random_animation()
 
                     if event.key == pygame.K_RETURN:
-                        print("RETURN DOWN")
-                        self.bb.increment_frame()
+                        self.bb.handle_animation()
 
                     if event.key == pygame.K_F1:
                         self.next_day()
 
-
-
-                if event.type == pygame.MOUSEMOTION:
-                    self.bb.set_location(pygame.mouse.get_pos())
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pressed = True
 
             if target_x is not None:
                 step += 1
                 drag_x -= dx
                 drag_y -= dy
-                pygame.mouse.set_pos(drag_x +160, drag_y+80)
-                self.bb.set_location((drag_x, drag_y))
+                pygame.mouse.set_pos(drag_x, drag_y)
+                self.bb.handle_animation()
+                self.bb.set_location((drag_x-160, drag_y-80))
                 if int(target_x) == int(drag_x) or step >= steps:
                     target_x = None
                     target_y = None
                     step = 0
-                    self.bb.set_frame(0)
-                    
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pressed = True
+                    self.bb.set_animation(Animation.DEFAULT)
+                    self.bb.handle_animation()
+                    self.bb.set_location((600, 400))
 
             self.fill((20, 20, 20))
             self.graph.draw(self.screen, 10, 10)
