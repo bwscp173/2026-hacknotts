@@ -8,6 +8,7 @@ pygame.init()
 
 from get_me_data.loader import Stock
 
+
 class Game:
     def __init__(self, width, height):
         self.width = width
@@ -15,10 +16,9 @@ class Game:
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption("Big money!!!!")
 
-        # TODO: add screen data
-
-        self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("AMD"))
-
+        self.graph = Graph(
+            int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("AMD")
+        )
         self.right_panel = RightPanel(
             int(self.width * (5 / 8)) + 20,
             10,
@@ -26,6 +26,7 @@ class Game:
             self.height - 20,
             None,
         )
+        self.right_panel.initialise_stock_list()
 
         # TODO: add individual buttons
         #    - stock selector to switch graph

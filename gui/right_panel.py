@@ -14,6 +14,9 @@ class RightPanel:
         self.surface = pygame.Surface((width, height))
         self.surface.fill((200, 200, 200))
         self.to_draw = []
+        # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
+        self.stocks: dict[str, dict] = {}
+
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80
         )
@@ -82,6 +85,13 @@ class RightPanel:
             call_on_click=lambda: print("Sell button clicked"),
         )
         self.to_draw.append(self.sell_button)
+
+    def initalise_stock_list(self, stocks: dict[str, dict]):
+        """
+        Stocks are {stock_name: current_price}
+        since you can't have bought anything before the first day (right?)
+        """
+        self.stock_list = stocks
 
     def draw(self, screen, global_mouse, is_left_clicking: bool):
         local_mouse = (global_mouse[0] - self.x, global_mouse[1] - self.y)

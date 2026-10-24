@@ -11,6 +11,7 @@ DB_PATH = os.getenv("DB_PATH")
 if DB_PATH is None:
     raise Exception("No DB path provided")
 
+
 def get_symbols():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -34,7 +35,7 @@ class Stock:
         return list(self.__data.keys())
 
     def dates(self):
-        """ Iterates over all dates / months"""
+        """Iterates over all dates / months"""
         for date in self.get_dates():
             yield date
 
@@ -61,7 +62,7 @@ class Stock:
                 "high": s_high,
                 "low": s_low,
                 "close": s_close,
-                "volume": s_volume
+                "volume": s_volume,
             }
             for _, __, date, s_open, s_close, s_high, s_low, s_volume in results
         }
