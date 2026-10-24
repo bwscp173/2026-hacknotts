@@ -20,7 +20,7 @@ class Game:
         self.width = width
         self.height = height
         self.screen = pygame.display.set_mode((width, height))
-        self.current_date = "2000-03-01"  # idk if this is even valid
+        self.current_date = "2000-02-01"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
         self.stock_objects: list[Stock] = []
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
