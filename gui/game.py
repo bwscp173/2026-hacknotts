@@ -9,6 +9,9 @@ from gui.right_panel import RightPanel
 from .graph import Graph
 from bonsai_buddy.main_v2 import bonsai_buddy, Animation
 import time
+import pyautogui
+pyautogui.PAUSE = 0.03
+
 
 pygame.init()
 
@@ -47,6 +50,7 @@ class Game:
         #    - current profit
 
         self.bb = bonsai_buddy(self.screen)
+        self.bb.set_location((600, 400))
         self.update_graph()
 
     def initialise_stock_list(self, date):
@@ -118,7 +122,7 @@ class Game:
                     if event.key == pygame.K_SPACE:
                         self.bb.draw(self.screen)
                         
-                        steps = 500
+                        steps = 30
                         target_x = randint(0, self.width)
                         target_y = randint(0, self.height)
                         drag_x, drag_y = pygame.mouse.get_pos()
@@ -144,6 +148,7 @@ class Game:
                 drag_x -= dx
                 drag_y -= dy
                 pygame.mouse.set_pos(drag_x, drag_y)
+                pyautogui.click()
                 self.bb.handle_animation()
                 self.bb.set_location((drag_x-160, drag_y-80))
                 if int(target_x) == int(drag_x) or step >= steps:
