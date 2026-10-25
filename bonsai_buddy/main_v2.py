@@ -141,8 +141,31 @@ class bonsai_buddy:
 
     def random_event(self):
         self.last_event = datetime.datetime.now()
-        #keyboard_event = random.choice([pygame.K_0, pygame.K_1, pygame.K_2,pygame.K_3,pygame.K_4,pygame.K_5,pygame.K_6,pygame.K_7,pygame.K_t,pygame.K_y,pygame.K_g,pygame.K_h,pygame.K_b,pygame.K_s])
-        select = random.randint(0,3)
+        key = random.choice([
+            pygame.K_0,"change stock",pygame.K_t,pygame.K_y,pygame.K_g,pygame.K_h,pygame.K_b,pygame.K_s
+        ])
+        if key == "change stock":
+            key = random.choice([pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6,
+            pygame.K_7])
+        keyboard_event = pygame.event.Event(pygame.KEYDOWN, {"key": key})
+        keyboard_event2 = pygame.event.Event(pygame.KEYUP, {"key": key})
+        key_to_gloat_map = {
+            pygame.K_0: "Let's sell\nthat!)", # resets pending trade vol to 0
+            pygame.K_1: "Let's have a \nlook at this one...",
+            pygame.K_2: "Let's have a \nlook at this one...",
+            pygame.K_3: "Let's have a \nlook at this one...",
+            pygame.K_4: "Let's have a \nlook at this one...",
+            pygame.K_5: "Let's have a \nlook at this one...",
+            pygame.K_6: "Let's have a \nlook at this one...",
+            pygame.K_7: "Let's have a \nlook at this one...",
+            pygame.K_t: "Some of this...",
+            pygame.K_y: "Some of this...",
+            pygame.K_g: "Some of that...",
+            pygame.K_h: "Some of that...",
+            pygame.K_b: "And buy!\nGod I'm good.",
+            pygame.K_s: "And sell!\nCan't believe\nyou bought\nthat.",
+        }
+        select = random.randint(0,4)
         if self.difficulty < 2: # if not hard - SOFTware
             if select == 0 or select == 1:
                 self.select_random_animation()
@@ -151,6 +174,11 @@ class bonsai_buddy:
                 return "STEALMOUSE"
             elif select == 3:
                 return self.select_message()
+            elif select == 4 and self.difficulty != 0: #not easy
+                print(f"posting keyboard event {keyboard_event} for key {key}")
+                pygame.event.post(keyboard_event)
+                pygame.event.post(keyboard_event2)
+                return key_to_gloat_map[key]
         else: # if hard
             if select == 0:
                 self.select_random_animation()
@@ -159,9 +187,12 @@ class bonsai_buddy:
                 return "STEALMOUSE"
             elif select == 3:
                 return self.select_message()
-            #elif select == 4:
-            #    pygame.event.post(keyboard_event)
-                
+            elif select == 4:
+                print(f"posting keyboard event {keyboard_event} for key {key}")
+                pygame.event.post(keyboard_event)
+                pygame.event.post(keyboard_event2)
+                return key_to_gloat_map[key]
+
     def select_point(self):
         selection = random.randint(0,5)
         if selection == 0:

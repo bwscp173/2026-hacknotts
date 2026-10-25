@@ -21,7 +21,6 @@ class StartMenu:
         self.selected_difficulty = None
 
         def set_difficulty(difficulty):
-            print(difficulty, self.difficulties)
             self.selected_difficulty = self.difficulties.index(difficulty)
             print(f"Selected difficulty: {difficulty}")
             self.play_game()
@@ -49,6 +48,7 @@ class StartMenu:
         print(f"Starting game with difficulty: {self.selected_difficulty}")
         game = Game(self.width, self.height, self.selected_difficulty)
         game.run()
+        exit(0)
 
 
     def run(self):
@@ -74,5 +74,3 @@ class StartMenu:
                     raise ValueError(f"Unknown element type: {type(element)}")
 
             pygame.display.flip()
-
-        pygame.quit()
