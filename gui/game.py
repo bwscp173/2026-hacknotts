@@ -2,6 +2,7 @@ from datetime import timedelta, datetime
 import gui.text_panel as text_panel
 
 import pygame
+import platform
 from random import randint
 
 from get_me_data import loader
@@ -12,12 +13,13 @@ from .graph import Graph
 from bonsai_buddy.main_v2 import bonsai_buddy, Animation
 import time
 import pyautogui
+from get_me_data.loader import Stock
+
 pyautogui.PAUSE = 0.03
 
 
 pygame.init()
 
-from get_me_data.loader import Stock
 
 
 class Game:
@@ -25,7 +27,11 @@ class Game:
         self.width = width
         self.height = height
         self.difficulty = difficulty
-        self.screen = pygame.display.set_mode((width, height), pygame.SCALED | pygame.FULLSCREEN)
+        if platform.system() == "Linux":
+            flags = pygame.SCALED | pygame.FULLSCREEN
+        else:
+            flags = pygame.FULLSCREEN
+        self.screen = pygame.display.set_mode((width, height), flags)
         self.current_date = "2000-02-01"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
         self.stock_objects: list[Stock] = []
