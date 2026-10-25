@@ -261,9 +261,9 @@ class Game:
                 response = self.bb.random_event()
                 if response == "STEALMOUSE":
                     STEALMOUSE=True
-                    response = None
                 elif type(response) == str:
                     speach.change_text(response)
+                response = None
 
             if STEALMOUSE:
                 self.bb.draw(self.screen)
@@ -276,23 +276,23 @@ class Game:
                 dy = (drag_y - target_y)/steps
                 dx = (drag_x - target_x)/steps
                 self.bb.set_animation(Animation.HOLD_HAND)
+                STEALMOUSE = False
 
-                if target_x is not None:
-                    step += 1
-                    drag_x -= dx
-                    drag_y -= dy
-                    pygame.mouse.set_pos(drag_x, drag_y)
-                    pyautogui.click()
+            if target_x is not None:
+                step += 1
+                drag_x -= dx
+                drag_y -= dy
+                pygame.mouse.set_pos(drag_x, drag_y)
+                pyautogui.click()
+                self.bb.handle_animation()
+                self.bb.set_location((drag_x-160, drag_y-80))
+                if int(target_x) == int(drag_x) or step >= steps:
+                    target_x = None
+                    target_y = None
+                    step = 0
+                    self.bb.set_animation(Animation.DEFAULT)
                     self.bb.handle_animation()
-                    self.bb.set_location((drag_x-160, drag_y-80))
-                    if int(target_x) == int(drag_x) or step >= steps:
-                        target_x = None
-                        target_y = None
-                        step = 0
-                        self.bb.set_animation(Animation.DEFAULT)
-                        self.bb.handle_animation()
-                        self.bb.set_location((620, 420))
-                        STEALMOUSE = False
+                    self.bb.set_location((620, 420))
 
 
             if frame_counter % 2 == 0:
