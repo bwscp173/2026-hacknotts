@@ -40,7 +40,6 @@ class BottomPanel:
     def get_todays_news(self, date: str):
         for news in self.news_dict:
             if news["date"] == date:
-                # wrapped_title =
                 self.news_panel.change_text(f"{news["title"]}\n{news["content"]}")
                 return
 
