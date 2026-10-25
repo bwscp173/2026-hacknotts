@@ -73,17 +73,17 @@ class StockList:
 
 
             if dif > 0:
-                colour = (0, 255, 0)
+                colour = (74,246,195)
                 char = "↑"
 
             elif dif == 0:
                 colour = (200, 200, 200)
                 char = " "
             else:
-                colour = (255, 0, 0)
+                colour = (255,67,61)
                 char = "↓"
 
-            text = f"{char}{dif:.2f}"
+            text = f"{char}{abs(dif):.2f}"
 
             dif_rect = self.font_small.render(text, True, colour)
             screen.blit(

@@ -10,7 +10,7 @@ class Button:
         self.text = text
         self.call_on_click = call_on_click
         font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 16)
-        self.text = font.render(text, True, (200, 200, 200))
+        self.text = font.render(text, True, (0,0,0))
 
     def draw(self, screen, mouse, is_left_clicking: bool):
         if (
@@ -19,7 +19,7 @@ class Button:
         ):
             if is_left_clicking:
                 pygame.draw.rect(
-                    screen, (0, 0, 255), [self.x, self.y, self.width, self.height]
+                    screen, (251,139,30), [self.x, self.y, self.width, self.height]
                 )
                 self.call_on_click()
             else:
@@ -29,7 +29,7 @@ class Button:
 
         else:
             pygame.draw.rect(
-                screen, (0, 0, 255), [self.x, self.y, self.width, self.height]
+                screen, (251,139,30), [self.x, self.y, self.width, self.height]
             )
 
         screen.blit(self.text, (self.x + 10, self.y + self.height // 4))
