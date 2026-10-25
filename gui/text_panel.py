@@ -13,11 +13,12 @@ class TextPanel:
         self.texts = []
         for line in text.split("\n"):
             self.texts.append(self.font.render(line, True, (0, 0, 0)))
+        self.colour = (251, 139, 30)
 
     def draw(self, screen):
         pygame.draw.rect(#
             screen,
-            (251, 139, 30),
+            self.colour,
             [self.x, self.y, self.width, self.height],
             border_radius=5 if self.is_rounded else 0
         )
