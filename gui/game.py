@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime
+import gui.text_panel as text_panel
 
 import pygame
 from random import randint
@@ -75,7 +76,7 @@ class Game:
 
         self.bottom_panel.update_data(self.cash, self.cash)
         self.bb = bonsai_buddy(self.screen)
-        self.bb.set_location((600, 400))
+        self.bb.set_location((620, 420))
         self.update_graph()
 
     def purchase_or_sell_stock(self, stock: str, quantity: int):
@@ -224,6 +225,8 @@ class Game:
         target_y = None
         STEALMOUSE = False
         step = 0
+        speach = text_panel.TextPanel("Bonzi Buddy says:\nHave Fun! :)", 530, 420, 240, 150)
+        speach.colour = (255,255,255)
 
         frame_counter = 0
         day_counter = 0
@@ -257,7 +260,8 @@ class Game:
                 if response == "STEALMOUSE":
                     STEALMOUSE=True
                     response = None
-
+                elif type(response) == str:
+                    speach.change_text(response)
 
             if STEALMOUSE:
                 self.bb.draw(self.screen)
@@ -285,10 +289,12 @@ class Game:
                         step = 0
                         self.bb.set_animation(Animation.DEFAULT)
                         self.bb.handle_animation()
-                        self.bb.set_location((600, 400))
+                        self.bb.set_location((620, 420))
                         STEALMOUSE = False
 
-            self.bb.handle_animation()
+
+            if frame_counter % 2 == 0:
+                self.bb.handle_animation()
 
             self.fill((20, 20, 20))
             self.graph.draw(self.screen, 10, 10)
@@ -296,6 +302,8 @@ class Game:
             self.right_panel.on_volume_change(self.volume_to_buy_or_sell)
             self.right_panel.draw(self.screen, pygame.mouse.get_pos(), mouse_pressed)
             self.bottom_panel.draw(self.screen)
+            if speach is not None:
+                speach.draw(self.screen)
             self.bb.draw(self.screen)
             self.update()
 

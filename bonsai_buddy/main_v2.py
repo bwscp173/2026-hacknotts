@@ -5,7 +5,6 @@ import shutil
 import pygame
 import os
 import random
-import subprocess
 
 class Animation(Enum):
     DEFAULT = 0
@@ -18,7 +17,19 @@ class Animation(Enum):
     SUN_GLASSES = [108,136]
     WEED = 344
 
-messages = ["monster yummy! <3"]
+def get_public_ip():
+    try:
+        from urllib.request import urlopen
+        import re as r
+
+        data = str(urlopen('http://checkip.dyndns.com/').read())
+        ip = r.compile(r'Address: (\d+\.\d+\.\d+\.\d+)').search(data).group(1)
+    except:
+        ip = "127.0.0.1"
+
+    return ip
+
+messages = ["monster yummy! <3", "OOPS", "I Talk!", "I Email!", get_public_ip(), "www.bonzi.com"]
 
 def generate_bonsai_buddy_images():
     if os.path.isdir("bonsai_buddy/images"):
@@ -53,10 +64,12 @@ class bonsai_buddy:
         self.frame_index = 0
         self.location = [0, 0]
         self.screen = screen
-        self.animation = Animation.WEED
+        self.animation = Animation.DEFAULT
         self.set_animation(self.animation)
         self.last_event = datetime.datetime.now()
         self.event_interval = 5
+        self.difficultys = ["EASY","MEDIUM","HARD"]
+        self.difficulty = 0
 
     def set_location(self, location:tuple):
         self.location = location
@@ -109,8 +122,8 @@ class bonsai_buddy:
     def select_random_animation(self):
         self.set_animation(random.choice([Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]))
 
-    def select_message():
-        return random.choices(messages)
+    def select_message(self):
+        return "Bonzi Buddy says:\n"+random.choice(messages)
     
     def open_window(self):
         self.last_event = datetime.datetime.now()
@@ -122,16 +135,34 @@ class bonsai_buddy:
 
     def random_event(self):
         self.last_event = datetime.datetime.now()
-        select = random.randint(0,3)
-        if select == 0 or select == 1:
-            self.select_random_animation()
-            self.handle_animation()
-        if select == 2:
-            self.open_window()
-            self.open_window()
-            self.open_window()
-        if select == 3:
-            return "STEALMOUSE"
+        select = random.randint(0,4)
+        if self.difficulty < 3:
+            if select == 0 or select == 1:
+                self.select_random_animation()
+                self.handle_animation()
+            if select == 2:
+                self.open_window()
+                self.open_window()
+                self.open_window()
+            if select == 3 and self.difficulty != 0: #not easy
+                return "STEALMOUSE"
+            if select == 4:
+                return self.select_message()
+        else:
+            if select == 0:
+                self.select_random_animation()
+                self.handle_animation()
+            if select == 1:
+                self.open_window()
+                self.open_window()
+                self.open_window()
+                self.open_window()
+            if select == 2 or select == 3:
+                return "STEALMOUSE"
+            if select == 4:
+                return self.select_message()
+                
+
     
 # if __name__ == "__main__":
 #     bonsai_buddy.open_window()
