@@ -50,18 +50,27 @@ class StockList:
                 self.x, self.y+(self.height//len(self.stocks)*i)+1,
                 self.width, (self.height//len(self.stocks))-2
             )
+
+            bg_colour = (50, 50, 50)
+            if collision_rect.collidepoint(*global_mouse):
+                if is_left_clicking:
+                    self.set_selected_stock(stock)
+
+                bg_colour = (70, 70, 70)
+
+            if stock == self.graph.symbol():
+                bg_colour = (80, 80, 80)
+
             pygame.draw.rect(
                 screen,
-                (50, 50, 50),
+                bg_colour,
                 collision_rect,
             )
 
-            if is_left_clicking and collision_rect.collidepoint(*global_mouse):
-                self.set_selected_stock(stock)
 
             name_rect = self.font.render(stock, True, (255, 255, 255))
             screen.blit(
-                name_rect, (self.x, self.y+(self.height//len(self.stocks)*i))
+                name_rect, (self.x+2, self.y+(self.height//len(self.stocks)*i)-3)
             )
 
             current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True, (255, 255, 255))

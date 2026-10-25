@@ -19,17 +19,20 @@ class Button:
         ):
             if is_left_clicking:
                 pygame.draw.rect(
-                    screen, (251,139,30), [self.x, self.y, self.width, self.height]
+                    screen, (251,139,30), [self.x, self.y, self.width, self.height],
+                    border_radius=5
                 )
                 self.call_on_click()
             else:
                 pygame.draw.rect(
-                    screen, (255, 0, 0), [self.x, self.y, self.width, self.height]
+                    screen, (255, 0, 0), [self.x, self.y, self.width, self.height],
+                    border_radius=5
                 )
 
         else:
             pygame.draw.rect(
-                screen, (251,139,30), [self.x, self.y, self.width, self.height]
+                screen, (251,139,30), [self.x, self.y, self.width, self.height],
+                border_radius=5
             )
 
         screen.blit(self.text, (self.x + 10, self.y + self.height // 4))
