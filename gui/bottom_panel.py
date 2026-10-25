@@ -29,7 +29,7 @@ class BottomPanel:
 
         self.news_dict = self.load_news_from_file()
         self.news_panel = TextPanel(
-            "Nothing to report...", 10, 60, 480, 130
+            "Nothing to report...", 10, 60, 480, 125
         )
         self.to_draw.append(self.news_panel)
 
