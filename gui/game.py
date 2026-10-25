@@ -35,6 +35,7 @@ class Game:
         pygame.display.set_caption("Bonzi's Big Bubble")
 
         self.running = False
+        # note: total inflation from 2000-2023 is 9.62% approx
         self.cut_off_date = "2003-01-01"
 
         self.frames_per_day = 60
