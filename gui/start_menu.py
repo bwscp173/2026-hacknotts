@@ -20,7 +20,8 @@ class StartMenu:
         self.selected_difficulty = None
 
         def set_difficulty(difficulty):
-            self.selected_difficulty = difficulty
+            print(difficulty, self.difficulties)
+            self.selected_difficulty = self.difficulties.index(difficulty)
             print(f"Selected difficulty: {difficulty}")
             self.play_game()
 
