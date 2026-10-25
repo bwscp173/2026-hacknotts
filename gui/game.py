@@ -25,7 +25,7 @@ class Game:
         self.width = width
         self.height = height
         self.difficulty = difficulty
-        self.screen = pygame.display.set_mode((width, height))
+        self.screen = pygame.display.set_mode((width, height), pygame.SCALED | pygame.FULLSCREEN)
         self.current_date = "2000-02-01"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
         self.stock_objects: list[Stock] = []
@@ -45,8 +45,6 @@ class Game:
         self.min_frames_per_day = 20
 
         self.days_per_decay = 6
-
-        # TODO: add screen data
 
         self.graph = Graph(int(self.width * (5 / 8)), int(self.height * (5 / 8)), Stock("IBM"), self)
 

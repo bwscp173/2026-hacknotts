@@ -11,6 +11,7 @@ class StartMenu:
         self.screen = pygame.display.set_mode((width, height))
         self.title_font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 48)
 
+        self.background = pygame.transform.scale(pygame.image.load("gui/background.png").convert(), (width, height))
 
         pygame.display.set_caption("Bonzi's Big Bubble")
 
@@ -30,14 +31,18 @@ class StartMenu:
             "temp", 100, 100, 600, 100)
         self.title_box.centre_text = True
         self.title_box.font = self.title_font
+        self.title_box.colour = (74,246,195)
         self.title_box.change_text("Bonzi's Big Bubble")
         self.to_draw.append(self.title_box)
 
         for i, difficulty in enumerate(self.difficulties):
             x_pos = 150 + (i * 180)  # Spawns buttons side by side
             y_pos = 400
+            # colour = (255, 67, 61) if data_point["close"] < data_point["open"] else (74, 246, 195)
             button = Button(x_pos, y_pos, 150, 80, str(difficulty), lambda d=difficulty: set_difficulty(d))
             button.centre_text = True
+            button.unselected_colour = (255, 67, 61)
+            button.selected_colour = (255, 0, 0)
             self.to_draw.append(button)
 
     def play_game(self):
@@ -58,7 +63,7 @@ class StartMenu:
                     mouse_pressed = True
 
             mouse_pos = pygame.mouse.get_pos()
-            self.screen.fill((30, 30, 30))
+            self.screen.blit(self.background, (0, 0))
 
             for element in self.to_draw:
                 if isinstance(element, Button):

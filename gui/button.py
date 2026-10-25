@@ -5,6 +5,8 @@ class Button:
     def __init__(self, x, y, width, height, text, call_on_click):
         self.x = x
         self.y = y
+        self.unselected_colour = (251,139,30)
+        self.selected_colour = (255,67,61)
         self.centre_text = False
         self.width = width
         self.height = height
@@ -20,19 +22,19 @@ class Button:
         ):
             if is_left_clicking:
                 pygame.draw.rect(
-                    screen, (251,139,30), [self.x, self.y, self.width, self.height],
+                    screen, self.unselected_colour, [self.x, self.y, self.width, self.height],
                     border_radius=5
                 )
                 self.call_on_click()
             else:
                 pygame.draw.rect(
-                    screen, (255, 0, 0), [self.x, self.y, self.width, self.height],
+                    screen, self.selected_colour, [self.x, self.y, self.width, self.height],
                     border_radius=5
                 )
 
         else:
             pygame.draw.rect(
-                screen, (251,139,30), [self.x, self.y, self.width, self.height],
+                screen, self.unselected_colour, [self.x, self.y, self.width, self.height],
                 border_radius=5
             )
 
