@@ -275,6 +275,52 @@ class Game:
                     if event.key == pygame.K_F3:
                         self.end_screen_loop()
 
+                    # hotkeys
+                    """
+                    1-8: switch to first-8th stock
+                    t: +10
+                    y: -10
+                    g: +100
+                    h: -100
+                    b: buy
+                    s: sell
+                    """
+                    match event.key:
+                        case pygame.K_0:
+                            self.volume_to_buy_or_sell = 0
+                        case pygame.K_1:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[0].symbol)
+                        case pygame.K_2:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[1].symbol)
+                        case pygame.K_3:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[2].symbol)
+                        case pygame.K_4:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[3].symbol)
+                        case pygame.K_5:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[4].symbol)
+                        case pygame.K_6:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[5].symbol)
+                        case pygame.K_7:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[6].symbol)
+                        case pygame.K_8:
+                            self.right_panel.stocks_list.set_selected_stock(self.stock_objects[7].symbol)
+                        case pygame.K_t:
+                            self.volume_to_buy_or_sell += 10
+                        case pygame.K_y:
+                            self.volume_to_buy_or_sell -= 10
+                            if self.volume_to_buy_or_sell < 0:
+                                self.volume_to_buy_or_sell = 0
+                        case pygame.K_g:
+                            self.volume_to_buy_or_sell += 100
+                        case pygame.K_h:
+                            self.volume_to_buy_or_sell -= 100
+                            if self.volume_to_buy_or_sell < 0:
+                                self.volume_to_buy_or_sell = 0
+                        case pygame.K_b:
+                            self.purchase_or_sell_stock(self.right_panel.stocks_list.get_selected_stock(), self.volume_to_buy_or_sell)
+                        case pygame.K_s:
+                            self.purchase_or_sell_stock(self.right_panel.stocks_list.get_selected_stock(), -self.volume_to_buy_or_sell)
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pressed = True
 

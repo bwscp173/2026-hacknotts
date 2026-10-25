@@ -8,4 +8,4 @@ we will use 'https://www.alphavantage.co/documentation/' for historical data
 - [x] Improve Button and Text Panels (make them better than blue/red)
 - [x] Add a start menu (bonzi enabled/disabled - benedict can do the bonzi management)
 - [ ] Make start menu pretty
-- [ ] Add some more custom end screens (how you performed vs inflation/bonds or something)
+- [x] Add some more custom end screens (how you performed vs inflation/bonds or something)
