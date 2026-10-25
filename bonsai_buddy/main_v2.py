@@ -15,9 +15,17 @@ class Animation(Enum):
     SPINNING_GLOBE = [40,87]
     BEATING = [101,108]
     SUN_GLASSES = [108,136]
+    PRAISE = [158,165]
+    SHINY = [177,190]
+    BOW = [221,232]
+    SAD = [236,241]
+    THINK = [233,247]
+    WAVE = [248,262]
+    JUMP = [302,307]
+    FLIP = [331,343]
     WEED = 344
 
-avaliable_animations = [Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]
+avaliable_animations = [Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES,Animation.PRAISE,Animation.SHINY,Animation.BOW,Animation.SAD,Animation.THINK,Animation.WAVE,Animation.JUMP,Animation.FLIP,Animation.WEED,]
 
 def get_public_ip():
     try:
