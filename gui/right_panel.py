@@ -24,6 +24,7 @@ class RightPanel:
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80
         )
+        self.volume_panel.is_rounded = True
         self.to_draw.append(self.volume_panel)
 
         self.plus_ten = Button(

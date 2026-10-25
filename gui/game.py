@@ -71,12 +71,6 @@ class Game:
         self.bottom_panel = BottomPanel(10, int(self.height * (5 / 8)) + 20, int(self.width * (5 / 8)),
                                         int(self.height * (3 / 8)) - 30)
 
-        # TODO: add individual buttons
-        #    - stock selector to switch graph
-        #    - volume to buy/sell stock
-        #    - buy/sell button
-        #    - banzibuddy interactions
-        #    - current profit
         self.bottom_panel.update_data(self.cash, self.cash)
         self.bb = bonsai_buddy(self.screen)
         self.bb.set_location((600, 400))
@@ -134,14 +128,18 @@ class Game:
 
         return stocks
 
+    def feed_date_to_news(self):
+        self.bottom_panel.get_todays_news(self.current_date)
+
     def next_day(self):
         parsed = datetime.strptime(self.current_date, "%Y-%m-%d")
         next_day = parsed + timedelta(days=1)
         self.current_date = next_day.strftime("%Y-%m-%d")
         self.increment_trading_day()
+        self.feed_date_to_news()
         self.update_graph()
 
-        if self.current_date == self.cut_off_date:
+        if self.current_date == self.cut_off_date or self.bottom_panel.net_worth <= 0:
             self.running = False
             self.end_screen_loop()
 

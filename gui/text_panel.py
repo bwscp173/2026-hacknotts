@@ -5,6 +5,7 @@ class TextPanel:
     def __init__(self, text, x, y, width, height):
         self.x = x
         self.y = y
+        self.is_rounded = False
         self.width = width
         self.height = height
         self.font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 16)
@@ -13,7 +14,10 @@ class TextPanel:
             self.texts.append(self.font.render(line, True, (0, 0, 0)))
 
     def draw(self, screen):
-        pygame.draw.rect(screen, (251, 139, 30), [self.x, self.y, self.width, self.height], border_radius=5)
+        if self.is_rounded:
+            pygame.draw.rect(screen, (251, 139, 30), [self.x, self.y, self.width, self.height], border_radius=5)
+        else:
+            pygame.draw.rect(screen, (251, 139, 30), [self.x, self.y, self.width, self.height])
         for i, line in enumerate(self.texts):
             screen.blit(line, (self.x + 10, 8 + self.y + i * 20))
 
