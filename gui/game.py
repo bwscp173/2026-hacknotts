@@ -158,7 +158,7 @@ class Game:
             (100, 100, 600, 400)
         )
 
-        rect = font.render(f"Final net worth: £{self.bottom_panel.net_worth}", True, (255, 255, 255))
+        rect = font.render(f"Final net worth: £{round(self.bottom_panel.net_worth, 2)}", True, (255, 255, 255))
         self.screen.blit(
             rect, ((self.screen.get_width() - rect.get_width()) // 2, 150)
         )
