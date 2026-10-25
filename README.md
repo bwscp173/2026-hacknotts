@@ -4,5 +4,5 @@ we will use 'https://www.alphavantage.co/documentation/' for historical data
 - [ ] Add news
 - [ ] Make bonsai buddy say stuff
 - [x] Standardise fonts
-- [ ] Show selected stock in right panel
-- [ ] Improve Button and Text Panels (make them better than blue/red)
+- [x] Show selected stock in right panel
+- [x] Improve Button and Text Panels (make them better than blue/red)

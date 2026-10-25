@@ -31,7 +31,7 @@ class Game:
         self.start_cash = 10_000.00  # 10k
         self.cash = self.start_cash
         self.volume_to_buy_or_sell = 0
-        
+
         pygame.display.set_caption("Bonzi's Big Bubble")
 
         self.running = False
