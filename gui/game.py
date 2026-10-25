@@ -84,7 +84,6 @@ class Game:
         self.update_graph()
 
     def purchase_or_sell_stock(self, stock: str, quantity: int):
-        print(f"Attempting to purchase/sell {quantity} of {stock}")
         if not isinstance(quantity, int):
             raise ValueError("Quantity must be an integer!")
 
