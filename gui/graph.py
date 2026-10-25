@@ -36,6 +36,9 @@ class Graph:
         y, m, d = self.__stock.get_latest_date()
         self.update(d, m, y, 30)
 
+    def symbol(self):
+        return self.__stock.symbol
+
     def change_stock(self, stock: Stock):
         self.__stock = stock
 
