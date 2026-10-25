@@ -35,4 +35,4 @@ class Button:
                 border_radius=5
             )
 
-        screen.blit(self.text, (self.x + 10, self.y + self.height // 4))
+        screen.blit(self.text, (self.x + 10, self.y + (self.height - self.text.get_height()) // 2))
