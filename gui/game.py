@@ -79,6 +79,7 @@ class Game:
         self.bottom_panel.update_data(self.cash, self.cash)
         self.bb = bonsai_buddy(self.screen)
         self.bb.set_location((620, 420))
+        self.bb.difficulty = int(difficulty)
         self.update_graph()
 
     def purchase_or_sell_stock(self, stock: str, quantity: int):
