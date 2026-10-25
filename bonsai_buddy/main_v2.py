@@ -135,18 +135,18 @@ class bonsai_buddy:
 
     def random_event(self):
         self.last_event = datetime.datetime.now()
-        select = random.randint(0,4)
+        select = random.randint(0,3)
         if self.difficulty < 3:
             if select == 0 or select == 1:
                 self.select_random_animation()
                 self.handle_animation()
-            if select == 2:
-                self.open_window()
-                self.open_window()
-                self.open_window()
-            if select == 3 and self.difficulty != 0: #not easy
+            # if select == 2:
+            #     self.open_window()
+            #     self.open_window()
+            #     self.open_window()
+            if select == 2 and self.difficulty != 0: #not easy
                 return "STEALMOUSE"
-            if select == 4:
+            if select == 3:
                 return self.select_message()
         else:
             if select == 0:
