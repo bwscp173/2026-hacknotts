@@ -20,9 +20,10 @@ from get_me_data.loader import Stock
 
 
 class Game:
-    def __init__(self, width, height):
+    def __init__(self, width, height, difficulty):
         self.width = width
         self.height = height
+        self.difficulty = difficulty
         self.screen = pygame.display.set_mode((width, height))
         self.current_date = "2000-02-01"  # idk if this is even valid
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
