@@ -17,13 +17,15 @@ class Animation(Enum):
     SUN_GLASSES = [108,136]
     WEED = 344
 
+avaliable_animations = [Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]
+
 def get_public_ip():
     try:
         from urllib.request import urlopen
-        import re as r
+        import re
 
         data = str(urlopen('http://checkip.dyndns.com/').read())
-        ip = r.compile(r'Address: (\d+\.\d+\.\d+\.\d+)').search(data).group(1)
+        ip = re.compile(r'Address: (\d+\.\d+\.\d+\.\d+)').search(data).group(1)
     except:
         ip = "127.0.0.1"
 
@@ -120,14 +122,10 @@ class bonsai_buddy:
             self.frame_index = self.animation_start_frame
 
     def select_random_animation(self):
-        self.set_animation(random.choice([Animation.SURFF,Animation.BEATING,Animation.SURF,Animation.CLAP,Animation.SPINNING_GLOBE,Animation.SUN_GLASSES]))
+        self.set_animation(random.choice(avaliable_animations))
 
     def select_message(self):
         return "Bonzi Buddy says:\n"+random.choice(messages)
-    
-    def open_window(self):
-        self.last_event = datetime.datetime.now()
-        os.system("start cmd /c whoami")
 
     def can_do_event(self):
         next_event = self.last_event + datetime.timedelta(seconds=self.event_interval)
@@ -135,36 +133,35 @@ class bonsai_buddy:
 
     def random_event(self):
         self.last_event = datetime.datetime.now()
+        #keyboard_event = random.choice([pygame.K_0, pygame.K_1, pygame.K_2,pygame.K_3,pygame.K_4,pygame.K_5,pygame.K_6,pygame.K_7,pygame.K_t,pygame.K_y,pygame.K_g,pygame.K_h,pygame.K_b,pygame.K_s])
         select = random.randint(0,3)
-        if self.difficulty < 3:
+        if self.difficulty < 2: # if not hard - SOFTware
             if select == 0 or select == 1:
                 self.select_random_animation()
                 self.handle_animation()
-            # if select == 2:
-            #     self.open_window()
-            #     self.open_window()
-            #     self.open_window()
-            if select == 2 and self.difficulty != 0: #not easy
+            elif select == 2 and self.difficulty != 0: #not easy
                 return "STEALMOUSE"
-            if select == 3:
+            elif select == 3:
                 return self.select_message()
-        else:
+        else: # if hard
             if select == 0:
                 self.select_random_animation()
                 self.handle_animation()
-            if select == 1:
-                self.open_window()
-                self.open_window()
-                self.open_window()
-                self.open_window()
-            if select == 2 or select == 3:
+            elif select == 1 or select == 2:
                 return "STEALMOUSE"
-            if select == 4:
+            elif select == 3:
                 return self.select_message()
+            #elif select == 4:
+            #    pygame.event.post(keyboard_event)
                 
+    def select_point(self):
+        selection = random.randint(0,5)
+        if selection == 0:
+            x = random.randint(0,800)
+            y = random.randint(0,600)
 
-    
-# if __name__ == "__main__":
-#     bonsai_buddy.open_window()
-#     bonsai_buddy.open_window()
-#     bonsai_buddy.open_window()
+        elif selection >= 1:
+            #more likly to hit buttons
+            x = random.randint(400,800)
+            y = random.randint(0,400)
+        return x,y

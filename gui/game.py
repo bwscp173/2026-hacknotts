@@ -84,6 +84,8 @@ class Game:
         self.bb = bonsai_buddy(self.screen)
         self.bb.set_location((620, 420))
         self.bb.difficulty = int(difficulty)
+        if self.bb.difficulty > 2:
+            self.bb.event_interval -= 1
         self.update_graph()
 
     def purchase_or_sell_stock(self, stock: str, quantity: int):
@@ -336,8 +338,7 @@ class Game:
                 self.bb.draw(self.screen)
                         
                 steps = 30
-                target_x = randint(0, self.width)
-                target_y = randint(0, self.height)
+                target_x, target_y = self.bb.select_point()
                 drag_x, drag_y = pygame.mouse.get_pos()
 
                 dy = (drag_y - target_y)/steps
