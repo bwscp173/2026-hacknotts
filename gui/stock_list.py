@@ -68,19 +68,20 @@ class StockList:
             )
 
 
-            name_rect = self.font.render(stock, True, (255, 255, 255))
+            name_rect = self.font_small.render(stock, True, (255, 255, 255))
             screen.blit(
-                name_rect, (self.x+2, self.y+(self.height//len(self.stocks)*i)-3)
+                name_rect, (self.x+2, self.y+(self.height//len(self.stocks)*i)+5)
             )
 
-            current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True, (255, 255, 255))
+            current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True,
+                                                        (255, 255, 255))
             screen.blit(
-                current_price_rect, (self.x + 150 - current_price_rect.get_width(), self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(self.stocks)) - current_price_rect.get_height())//2)
+                current_price_rect, (
+                    self.x + 120 - current_price_rect.get_width(),
+                    self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(self.stocks)) - current_price_rect.get_height()) // 2)
             )
 
             dif = difs[stock]
-
-
             if dif > 0:
                 colour = (74,246,195)
                 char = "↑"
@@ -96,10 +97,18 @@ class StockList:
 
             dif_rect = self.font_small.render(text, True, colour)
             screen.blit(
-                dif_rect, (self.x + 200,
+                dif_rect, (self.x + 130,
                                      self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(
                                          self.stocks)) - dif_rect.get_height()) // 2)
             )
 
+            amt_owned = int(self.stocks[stock]["total_stocks_owned"])
+            amt_owned_rect = self.font_small.render(f"{amt_owned}x", True, (255, 255, 255))
+            screen.blit(
+                amt_owned_rect, (self.x + 255 - amt_owned_rect.get_width(),
+                                 self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(
+                                     self.stocks)) - amt_owned_rect.get_height()) // 2)
+            )
 
-        
+
+
