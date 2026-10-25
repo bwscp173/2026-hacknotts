@@ -20,9 +20,11 @@ class RightPanel:
 
         self.stocks_list = StockList(stocks, graph, 525, 15, 260, 250)
 
+        # placeholder text should never show, every draw it is overwritten with the current volume to buy/sell
         self.volume_panel = TextPanel(
             "Volume to\nBuy/Sell", 10, self.height * 5 // 8 - 80, 120, 80
         )
+        self.volume_panel.is_rounded = True
         self.to_draw.append(self.volume_panel)
 
         self.plus_ten = Button(
@@ -87,7 +89,7 @@ class RightPanel:
         self.to_draw.append(self.sell_button)
 
     def on_volume_change(self, new_quantity: int):
-        self.volume_panel.change_text(f"{new_quantity}\n${new_quantity * self.stocks_list.get_cur_stock_buy():.2f}")
+        self.volume_panel.change_text(f"{new_quantity}x\n\n${new_quantity * self.stocks_list.get_cur_stock_buy():.2f}")
 
     def draw(self, screen, global_mouse, is_left_clicking: bool):
         local_mouse = (global_mouse[0] - self.x, global_mouse[1] - self.y)

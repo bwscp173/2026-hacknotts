@@ -18,8 +18,8 @@ class StockList:
         self.unselected_bg_colour = (255, 0, 0)
         self.selected_bg_colour = (0, 255, 0)
 
-        self.font = pygame.font.SysFont("Monospace", (self.height//len(self.stocks))-4)
-        self.font_small = pygame.font.SysFont("Monospace", (self.height // len(self.stocks)) // 2)
+        self.font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", (self.height//len(self.stocks))-4)
+        self.font_small = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", (self.height // len(self.stocks)) // 2)
 
     def calc_diffs_to_yesterday(self):
         diffs = {}
@@ -50,47 +50,65 @@ class StockList:
                 self.x, self.y+(self.height//len(self.stocks)*i)+1,
                 self.width, (self.height//len(self.stocks))-2
             )
+
+            bg_colour = (50, 50, 50)
+            if collision_rect.collidepoint(*global_mouse):
+                if is_left_clicking:
+                    self.set_selected_stock(stock)
+
+                bg_colour = (70, 70, 70)
+
+            if stock == self.graph.symbol():
+                bg_colour = (80, 80, 80)
+
             pygame.draw.rect(
                 screen,
-                (50, 50, 50),
+                bg_colour,
                 collision_rect,
             )
 
-            if is_left_clicking and collision_rect.collidepoint(*global_mouse):
-                self.set_selected_stock(stock)
 
-            name_rect = self.font.render(stock, True, (255, 255, 255))
+            name_rect = self.font_small.render(stock, True, (255, 255, 255))
             screen.blit(
-                name_rect, (self.x, self.y+(self.height//len(self.stocks)*i))
+                name_rect, (self.x+2, self.y+(self.height//len(self.stocks)*i)+5)
             )
 
-            current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True, (255, 255, 255))
+            current_price_rect = self.font_small.render(f"${self.stocks[stock]["buy_price"]:06.2f}", True,
+                                                        (255, 255, 255))
             screen.blit(
-                current_price_rect, (self.x + 150 - current_price_rect.get_width(), self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(self.stocks)) - current_price_rect.get_height())//2)
+                current_price_rect, (
+                    self.x + 120 - current_price_rect.get_width(),
+                    self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(self.stocks)) - current_price_rect.get_height()) // 2)
             )
 
             dif = difs[stock]
-
-
             if dif > 0:
-                colour = (0, 255, 0)
+                colour = (74,246,195)
                 char = "↑"
 
             elif dif == 0:
                 colour = (200, 200, 200)
                 char = " "
             else:
-                colour = (255, 0, 0)
+                colour = (255,67,61)
                 char = "↓"
 
-            text = f"{char}{dif:.2f}"
+            text = f"{char}{abs(dif):.2f}"
 
             dif_rect = self.font_small.render(text, True, colour)
             screen.blit(
-                dif_rect, (self.x + 200,
+                dif_rect, (self.x + 130,
                                      self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(
                                          self.stocks)) - dif_rect.get_height()) // 2)
             )
 
+            amt_owned = int(self.stocks[stock]["total_stocks_owned"])
+            amt_owned_rect = self.font_small.render(f"{amt_owned}x", True, (255, 255, 255))
+            screen.blit(
+                amt_owned_rect, (self.x + 255 - amt_owned_rect.get_width(),
+                                 self.y + (self.height // len(self.stocks) * i) + 1 + ((self.height // len(
+                                     self.stocks)) - amt_owned_rect.get_height()) // 2)
+            )
 
-        
+
+

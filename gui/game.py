@@ -28,11 +28,14 @@ class Game:
         # stock_name: {buy_price: float, is_selected: bool, total_stocks_owned: int, total_investment: float}
         self.stock_objects: list[Stock] = []
         self.stocks: dict[str, dict] = self.initialise_stock_list(self.current_date)
-        self.cash = 10_000.00  # 10k
+        self.start_cash = 10_000.00  # 10k
+        self.cash = self.start_cash
         self.volume_to_buy_or_sell = 0
-        pygame.display.set_caption("Big money!!!!")
+
+        pygame.display.set_caption("Bonzi's Big Bubble")
 
         self.running = False
+        # note: total inflation from 2000-2023 is 9.62% approx
         self.cut_off_date = "2003-01-01"
 
         self.frames_per_day = 60
@@ -48,7 +51,6 @@ class Game:
             self.volume_to_buy_or_sell += amt
             if self.volume_to_buy_or_sell < 0:
                 self.volume_to_buy_or_sell = 0
-            print(f"Volume to buy/sell: {self.volume_to_buy_or_sell}")
 
         def purchase_stock(stock: str):
             self.purchase_or_sell_stock(stock, self.volume_to_buy_or_sell)
@@ -71,19 +73,12 @@ class Game:
         self.bottom_panel = BottomPanel(10, int(self.height * (5 / 8)) + 20, int(self.width * (5 / 8)),
                                         int(self.height * (3 / 8)) - 30)
 
-        # TODO: add individual buttons
-        #    - stock selector to switch graph
-        #    - volume to buy/sell stock
-        #    - buy/sell button
-        #    - banzibuddy interactions
-        #    - current profit
         self.bottom_panel.update_data(self.cash, self.cash)
         self.bb = bonsai_buddy(self.screen)
         self.bb.set_location((600, 400))
         self.update_graph()
 
     def purchase_or_sell_stock(self, stock: str, quantity: int):
-        print(f"Attempting to purchase/sell {quantity} of {stock}")
         if not isinstance(quantity, int):
             raise ValueError("Quantity must be an integer!")
 
@@ -92,8 +87,8 @@ class Game:
             return
 
         if quantity > 0 and self.cash < self.stocks[stock]["buy_price"] * quantity:
-            print("Not enough cash to buy stock!")
-            return
+            quantity = max(0, int(self.cash // self.stocks[stock]["buy_price"]))
+            print(f"Not enough cash to buy! Buying {quantity} instead.")
         elif quantity < 0 and self.stocks[stock]["total_stocks_owned"] < abs(quantity):
             quantity = min(0, -self.stocks[stock]["total_stocks_owned"])
             print(f"Not enough stock to sell! Selling {abs(quantity)} instead.")
@@ -134,14 +129,18 @@ class Game:
 
         return stocks
 
+    def feed_date_to_news(self):
+        self.bottom_panel.get_todays_news(self.current_date)
+
     def next_day(self):
         parsed = datetime.strptime(self.current_date, "%Y-%m-%d")
         next_day = parsed + timedelta(days=1)
         self.current_date = next_day.strftime("%Y-%m-%d")
         self.increment_trading_day()
+        self.feed_date_to_news()
         self.update_graph()
 
-        if self.current_date == self.cut_off_date:
+        if self.current_date == self.cut_off_date or self.bottom_panel.net_worth <= 0:
             self.running = False
             self.end_screen_loop()
 
@@ -149,6 +148,43 @@ class Game:
     def end_screen_loop(self):
         sub_running = True
 
+        font = pygame.font.SysFont("Monospace", 32)
+
+        pygame.draw.rect(
+            self.screen,
+            (40, 40, 40),
+            (100, 100, 600, 400)
+        )
+
+        rect = font.render(f"Final net worth: £{round(self.bottom_panel.net_worth, 2)}", True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 150)
+        )
+
+
+        gained_percentage = round(((self.bottom_panel.net_worth / self.start_cash ) - 1) * 100, 2)
+        text = f"That means you made {('+' if gained_percentage > 0 else '')}{gained_percentage}%"
+
+        rect = font.render(text, True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 200)
+        )
+
+        rect = font.render("The world lost over", True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 300)
+        )
+
+        rect = font.render("$5 trillion in market cap.", True, (255, 255, 255))
+        self.screen.blit(
+            rect, ((self.screen.get_width() - rect.get_width()) // 2, 350)
+        )
+
+        if gained_percentage < 0:
+            rect = font.render("Maybe try again.", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 450)
+            )
 
 
         while sub_running:
@@ -209,6 +245,9 @@ class Game:
 
                     if event.key == pygame.K_F1:
                         self.next_day()
+
+                    if event.key == pygame.K_F3:
+                        self.end_screen_loop()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pressed = True

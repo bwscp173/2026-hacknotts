@@ -36,6 +36,9 @@ class Graph:
         y, m, d = self.__stock.get_latest_date()
         self.update(d, m, y, 30)
 
+    def symbol(self):
+        return self.__stock.symbol
+
     def change_stock(self, stock: Stock):
         self.__stock = stock
 
@@ -69,7 +72,7 @@ class Graph:
 
         day_width = (self.surface.get_width() - 40) / len(data_points)
 
-        font = pygame.font.SysFont("monospace", 10)
+        font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 10)
 
         step = (max_value - min_value) / 5
         for i in range(6):
@@ -132,7 +135,7 @@ class Graph:
             close_y = (values[2]  - y_offset) * y_scale
 
             average = (low_y + high_y) / 2
-            colour = (255, 0, 0) if data_point["close"] < data_point["open"] else (0, 255, 0)
+            colour = (255,67,61) if data_point["close"] < data_point["open"] else (74,246,195)
 
             pygame.draw.rect(
                 self.surface,
