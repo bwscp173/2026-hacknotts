@@ -38,6 +38,7 @@ class Game:
 
         self.running = False
         # note: total inflation from 2000-2023 is 9.62% approx
+        # bond prices were high until start of 2002
         self.cut_off_date = "2003-01-01"
 
         self.frames_per_day = 60
@@ -151,7 +152,7 @@ class Game:
     def end_screen_loop(self):
         sub_running = True
 
-        font = pygame.font.SysFont("Monospace", 32)
+        font = pygame.font.Font("fonts/IBMPlexMono-Regular.ttf", 32)
 
         pygame.draw.rect(
             self.screen,
@@ -159,13 +160,14 @@ class Game:
             (100, 100, 600, 400)
         )
 
-        rect = font.render(f"Final net worth: £{round(self.bottom_panel.net_worth, 2)}", True, (255, 255, 255))
+        rect = font.render(f"Final net worth: ${round(self.bottom_panel.net_worth, 2)}", True, (255, 255, 255))
         self.screen.blit(
             rect, ((self.screen.get_width() - rect.get_width()) // 2, 150)
         )
 
 
         gained_percentage = round(((self.bottom_panel.net_worth / self.start_cash ) - 1) * 100, 2)
+        total_years_elapsed = (datetime.strptime(self.cut_off_date, "%Y-%m-%d") - datetime.strptime("2000-02-01", "%Y-%m-%d")).days / 365.25
         text = f"That means you made {('+' if gained_percentage > 0 else '')}{gained_percentage}%"
 
         rect = font.render(text, True, (255, 255, 255))
@@ -173,20 +175,35 @@ class Game:
             rect, ((self.screen.get_width() - rect.get_width()) // 2, 200)
         )
 
-        rect = font.render("The world lost over", True, (255, 255, 255))
-        self.screen.blit(
-            rect, ((self.screen.get_width() - rect.get_width()) // 2, 300)
-        )
-
-        rect = font.render("$5 trillion in market cap.", True, (255, 255, 255))
-        self.screen.blit(
-            rect, ((self.screen.get_width() - rect.get_width()) // 2, 350)
-        )
-
-        if gained_percentage < 0:
-            rect = font.render("Maybe try again.", True, (255, 255, 255))
+        if gained_percentage < 1.039 ** total_years_elapsed: # if they did worse than bonds, hang it up bro
+            rect = font.render("If invested in bonds instead,", True, (255, 255, 255))
             self.screen.blit(
-                rect, ((self.screen.get_width() - rect.get_width()) // 2, 450)
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 300)
+            )
+
+            rect = font.render("you'd have made $11,288;", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 350)
+            )
+
+            rect = font.render("maybe stocks aren't for you.", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 400)
+            )
+        else:
+            rect = font.render("You did better than bonds!", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 300)
+            )
+
+            rect = font.render(">$5T was lost to the bubble,", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 350)
+            )
+
+            rect = font.render("but none of that was yours!", True, (255, 255, 255))
+            self.screen.blit(
+                rect, ((self.screen.get_width() - rect.get_width()) // 2, 400)
             )
 
 
